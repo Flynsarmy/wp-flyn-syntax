@@ -99,7 +99,7 @@ Wrap code blocks with `<pre lang='LANGUAGE' line='1' escaped='1|true' highlight=
     </div>
     </pre>
 
-== Supported Languages ==
+## Supported Languages
 
 The following languages are most supported in the `lang` attribute:
 
