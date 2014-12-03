@@ -1,0 +1,4 @@
+[submodule "vendor/geshi-1.0"]
+	path = vendor/geshi-1.0
+	url = https://github.com/GeSHi/geshi-1.0.git
+	branch = master
