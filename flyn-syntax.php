@@ -297,7 +297,10 @@ class Flyn_Syntax
 
 	public function afterFilterContent( $content )
 	{
-		global $post;
+        if ( empty($this->matches) )
+            return $content;
+
+        global $post;
 		$the_post = $post;
         $the_post_id = 0;
 
@@ -328,11 +331,16 @@ class Flyn_Syntax
 		if ( $the_post_id && $this->cache_generated && $this->cache )
             update_post_meta($the_post_id, 'flyn-syntax-cache-content', wp_slash($this->cache));
 
+        $this->matches = array();
+
 		return $content;
 	}
 
 	public function afterFilterExcerpt( $content )
 	{
+        if ( empty($this->matches) )
+            return $content;
+
 		global $post;
 		$the_post = $post;
 		$the_post_id = $post->ID;
@@ -362,12 +370,17 @@ class Flyn_Syntax
 		if ( is_object($the_post) && $this->cache_generated && $this->cache )
 			update_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', wp_slash($this->cache));
 
+        $this->matches = array();
+
 		return $content;
 	}
 
 	public function afterFilterComment( $content )
 	{
-		global $comment;
+        if ( empty($this->matches) )
+            return $content;
+
+        global $comment;
 		$the_post = $comment;
 		$the_post_id = $comment->comment_ID;
 
@@ -389,6 +402,8 @@ class Flyn_Syntax
 		//Update cache if we're generating and were there <pre> tags generated
 		if ( is_object($the_post) && $this->cache_generated && $this->cache )
 			update_comment_meta($the_post_id, 'flyn-syntax-cache-comment', wp_slash($this->cache));
+
+        $this->matches = array();
 
 		return $content;
 	}
