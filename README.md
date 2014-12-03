@@ -22,9 +22,12 @@ Want to contribute? Flyn-Syntax can be found [on Github](https://github.com/Flyn
 
 ## Screenshots
 
-1. PHP, no line numbers.
-2. Java, with line numbers.
-3. Ruby, with line numbers starting at 18.
+1. PHP, no line numbers.   
+![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/screenshot-1.png)
+1. Java, with line numbers.  
+![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/screenshot-2.png)
+1. Ruby, with line numbers starting at 18.  
+![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/screenshot-3.png)
 
 ## Usage
 
