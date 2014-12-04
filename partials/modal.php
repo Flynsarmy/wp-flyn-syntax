@@ -277,7 +277,7 @@
 
 
         <label for="line">
-            <input type="checkbox" name="escaped" id="escaped" value="true" />
+            <input type="checkbox" name="escaped" id="escaped" value="true" title="Check this if the code entered below is already escaped." />
             Escaped?
         </label>
 
