@@ -272,7 +272,7 @@
 
         <label for="line">
             Line:
-            <input type="text" name="line" id="line" value="1" onchange="if(!/^[0-9]*$/.test(this.value))this.value='';" size="3" />
+            <input type="text" name="line" id="line" value="1" onchange="if(!/^[0-9]*$/.test(this.value))this.value='';" size="3" title="Starting line number. Leave blank for no lines." />
         </label>
 
 
@@ -283,7 +283,7 @@
 
         <label for="highlight">
             Highlight:
-            <input type="text" name="highlight" id="highlight" value="" onchange="if(!/^[0-9,\- ]*$/.test(this.value))this.value='';" size="10" />
+            <input type="text" name="highlight" id="highlight" value="" onchange="if(!/^[0-9,\- ]*$/.test(this.value))this.value='';" size="10" title="Highlight the specified lines. e.g 3-5, 10, 12" />
         </label>
     </div>
     <div id="editor"></div>
