@@ -277,7 +277,7 @@
 
 
         <label for="line">
-            <input type="checkbox" name="escaped" id="escaped" value="1" />
+            <input type="checkbox" name="escaped" id="escaped" value="true" />
             Escaped?
         </label>
 
