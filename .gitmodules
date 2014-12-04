@@ -2,3 +2,7 @@
 	path = vendor/geshi-1.0
 	url = https://github.com/GeSHi/geshi-1.0.git
 	branch = master
+[submodule "vendor/ace-builds"]
+	path = vendor/ace-builds
+	url = https://github.com/ajaxorg/ace-builds.git
+	branch = master

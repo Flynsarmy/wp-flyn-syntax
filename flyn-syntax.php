@@ -90,6 +90,30 @@ class Flyn_Syntax
         add_filter( 'the_content', array( $this, 'afterFilterContent' ), 99);
         add_filter( 'the_excerpt', array( $this, 'afterFilterExcerpt' ), 99);
         add_filter( 'comment_text', array( $this, 'afterFilterComment' ), 99);
+
+        // Load the TinyMCE plugin
+        add_filter("mce_external_plugins", array($this, 'loadTinyMCEPlugin'));
+        // Add the syntax highlighter button
+        add_filter('mce_buttons', array($this, 'addTinyMCEButton'));
+        // Display the modal
+        add_action('wp_ajax_flyn-syntax-code-modal', array($this, 'showCodeEditorWindow'));
+    }
+
+    public function loadTinyMCEPlugin($plugin_array) {
+        $plugin_array['flynsyntaxcodemodal'] = plugin_dir_url(__FILE__) . 'assets/js/code-modal.js';
+        return $plugin_array;
+    }
+
+    public function addTinyMCEButton($buttons)
+    {
+        array_push($buttons, "separator", "flynsyntaxcodemodal");
+        return $buttons;
+    }
+
+    public function showCodeEditorWindow()
+    {
+        require __DIR__ . '/partials/modal.php';
+        exit;
     }
 
     public function invalidatePostCache( $post_id )
