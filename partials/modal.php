@@ -291,6 +291,8 @@
     <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ace.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
     <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ext-settings_menu.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
     <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ext-modelist.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
+    <script src="<?= plugins_url('/vendor/emmet-core/emmet.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
+    <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ext-emmet.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("editor");
 
@@ -307,6 +309,9 @@
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/javascript");
         editor.session.setMode("ace/mode/php");
+
+        // enable emmet on the current editor
+        editor.setOption("enableEmmet", true);
 
         function setEditorMode(modeVal, elem)
         {

@@ -6,3 +6,7 @@
 	path = vendor/ace-builds
 	url = https://github.com/ajaxorg/ace-builds.git
 	branch = master
+[submodule "vendor/emmet-core"]
+	path = vendor/emmet-core
+	url = https://github.com/nightwing/emmet-core.git
+	branch = master
