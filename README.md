@@ -169,6 +169,10 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 ## Changelog
 
+**v1.1** *(2014-12-04)* 
+
+*  Added Ace code editor modal for creating code blocks
+
 **v1.0** *(2014-12-03)* 
 
 *  Initial release

@@ -3,7 +3,7 @@
 Plugin Name: Flyn-Syntax
 Plugin URI: http://www.flynsarmy.com
 Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">GeSHi</a> supporting a wide range of popular languages.
-Version: 1.0
+Version: 1.1
 Author: Flyn San
 Author URI: http://www.flynsarmy.com
 Original Author: Steven A. Zahm, Ryan McGeary
@@ -37,7 +37,7 @@ Look at these:    http://wordpress.org/extend/plugins/wp-synhighlight/
 
 class Flyn_Syntax
 {
-    public $version = '1.0';
+    public $version = '1.1';
 
     /**
     * @var (object) WP_Syntax stores the instance of this class.
