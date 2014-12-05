@@ -108,7 +108,7 @@ jQuery.fn.serializeObject = function() {
 
                                 if ( !options.escaped )
                                 {
-                                    options.escaped = 1;
+                                    options.escaped = 'true';
                                     html = htmlspecialchars(html);
                                 }
 
