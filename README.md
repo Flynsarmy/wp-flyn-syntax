@@ -33,6 +33,11 @@ Want to contribute? Flyn-Syntax can be found [on Github](https://github.com/Flyn
 
 ## Usage
 
+### Easy Mode
+
+Click the *Insert code block* button added by this plugin in the post editor WYSIWYG. A modal will appear with a code editor. 
+
+### Manual 
 Wrap code blocks with `<pre lang='LANGUAGE' line='1' escaped='1|true' highlight='1,2,5-7' src='http://github.com/my/repo'>` and `</pre>` where 
 
 1. `lang` is a [GeSHi](http://qbnz.com/highlighter/) supported language syntax. See below for a full list of supported languages. *(required)*
