@@ -254,8 +254,9 @@ class Flyn_Syntax
         $match = $this->matches[ $i ];
 
         $language = strtolower( trim( $match[1] ) );
-        $line = trim( $match[2] );
+        $line = intval(trim( $match[2] ));
         $escaped = trim( $match[3] );
+        $highlight = $match[4];
         $caption = $this->caption( $match[5] );
         $code = trim($match[6]);
 
@@ -266,14 +267,14 @@ class Flyn_Syntax
 
         do_action_ref_array( 'flyn_syntax_init_geshi', array( &$geshi ) );
 
-        if ( ! empty( $match[4] ) ) {
+        if ( ! empty( $highlight ) ) {
 
-            $linespecs = strpos( $match[4], ",") == FALSE ? array( $match[4] ) : explode( ',', $match[4] );
+            $linespecs = explode( ',', $highlight );
             $lines = array();
 
             foreach ( $linespecs as $spec ) {
                 $range = explode( '-', $spec );
-                $lines = array_merge( $lines, ( count( $range ) == 2) ? range( $range[0], $range[1]) : $range );
+                $lines = array_merge( $lines, count($range) == 2 ? range($range[0], $range[1]) : $range );
             }
 
             $geshi->highlight_lines_extra( $lines );
