@@ -176,6 +176,11 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 ## Changelog
 
+**v1.1.1** *(2015-01-24)*
+
+*  Remove 'already escaped?' option from code editor modal
+*  Add newlines at the end of inserted code blocks so cursor isn't trapped in the *pre* element in visual mode
+
 **v1.1** *(2014-12-04)* 
 
 *  Added Ace code editor modal for creating code blocks

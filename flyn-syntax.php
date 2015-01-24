@@ -3,7 +3,7 @@
 Plugin Name: Flyn-Syntax
 Plugin URI: http://www.flynsarmy.com
 Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">GeSHi</a> supporting a wide range of popular languages.
-Version: 1.1
+Version: 1.1.1
 Author: Flyn San
 Author URI: http://www.flynsarmy.com
 Original Author: Steven A. Zahm, Ryan McGeary
