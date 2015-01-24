@@ -119,7 +119,7 @@ jQuery.fn.serializeObject = function() {
                                 });
                                 elem.innerHTML = html;
 
-                                editor.insertContent(elem.outerHTML);
+                                editor.insertContent(elem.outerHTML + "\n\n&nbsp;");
                                 editor.windowManager.close();
                             },
                         },
