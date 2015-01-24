@@ -106,11 +106,7 @@ jQuery.fn.serializeObject = function() {
                                 var options = jQuery(frame.document.body).find(':input').serializeObject();
                                 var html = frame.editor.getValue();
 
-                                if ( !options.escaped )
-                                {
-                                    options.escaped = 'true';
-                                    html = htmlspecialchars(html);
-                                }
+                                html = htmlspecialchars(html);
 
                                 var elem = document.createElement('pre');
                                 jQuery.each(options, function(key, value) {
