@@ -113,6 +113,7 @@ jQuery.fn.serializeObject = function() {
                                     if ( value )
                                         elem.setAttribute(key, value);
                                 });
+                                elem.setAttribute('escaped', 'true');
                                 elem.innerHTML = html;
 
                                 editor.insertContent(elem.outerHTML + "\n\n&nbsp;");

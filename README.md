@@ -176,6 +176,10 @@ review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 ## Changelog
 
+**v1.1.2** *(2015-02-05)*
+
+*  Fixed *escaped* attribute on generated `PRE` tag
+
 **v1.1.1** *(2015-01-24)*
 
 *  Remove 'already escaped?' option from code editor modal
