@@ -240,6 +240,7 @@
                 <option value="tcl" data-ace-lang="tcl">tcl</option>
                 <option value="teraterm" data-ace-lang="text">teraterm</option>
                 <option value="text" data-ace-lang="text">text</option>
+                <option value="twig" data-ace-lang="twig">twig</option>
                 <option value="thinbasic" data-ace-lang="text">thinbasic</option>
                 <option value="tsql" data-ace-lang="text">tsql</option>
                 <option value="typoscript" data-ace-lang="typescript">typoscript</option>
