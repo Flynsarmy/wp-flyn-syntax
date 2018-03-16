@@ -130,7 +130,7 @@ class Flyn_Syntax
     public function inludeDependencies()
     {
         if ( !defined('GESHI_VERSION') )
-            require_once __DIR__.'/vendor/geshi-1.0/src/geshi.php';
+            require_once __DIR__.'/vendor/geshi/geshi/src/geshi.php';
     }
 
     /**

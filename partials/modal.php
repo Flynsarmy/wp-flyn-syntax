@@ -26,7 +26,8 @@
 
         <label for="lang">
             Lang:
-            <select name="lang" id="lang" onchange="setEditorMode(this.options[this.selectedIndex].dataset.aceLang, this)">
+            <select name="lang" id="lang" onchange="setEditorMode(this.value)">
+                <?php /*
                 <option value="4cs" data-ace-lang="text">4cs</option>
                 <option value="6502acme" data-ace-lang="text">6502acme</option>
                 <option value="6502kickass" data-ace-lang="text">6502kickass</option>
@@ -268,6 +269,7 @@
                 <option value="yaml" data-ace-lang="yaml">yaml</option>
                 <option value="z80" data-ace-lang="text">z80</option>
                 <option value="zxbasic" data-ace-lang="text">zxbasic</option>
+                */ ?>
             </select>
         </label>
 
@@ -283,13 +285,20 @@
     </div>
     <div id="editor"></div>
 
-    <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ace.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
-    <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ext-settings_menu.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
-    <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ext-modelist.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
-    <script src="<?= plugins_url('/vendor/emmet-core/emmet.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
-    <script src="<?= plugins_url('/vendor/ace-builds/src-min-noconflict/ext-emmet.js', __DIR__.'/../index.php') ?>" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-settings_menu.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-modelist.js"></script>
+    <script src="<?= plugins_url('/vendor/nightwing/emmet-core/emmet.js', __DIR__.'/../index.php') ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-emmet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
     <script>
         var editor = ace.edit("editor");
+        var settings = Cookies.getJSON('flyn-syntax-settings');
+        if ( typeof(settings) == 'undefined' )
+            settings = {
+                mode: 'ace/mode/php',
+                theme: 'ace/theme/monokai'
+            };
 
         ace.require('ace/ext/settings_menu').init(editor);
         editor.commands.addCommands([{
@@ -301,19 +310,37 @@
             readOnly: true
         }]);
 
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/javascript");
-        editor.session.setMode("ace/mode/php");
+        // Dynamically add all supported lanagues to the Language dropdown
+        var modelist = ace.require('ace/ext/modelist');
+        var selLang = document.getElementById('lang');
+        for ( var i = 0; i < modelist.modes.length; i++ )
+        {
+            var option = document.createElement('option');
+            option.text = modelist.modes[i].caption;
+            option.value = modelist.modes[i].mode;
+
+            if ( option.value == settings.mode )
+                option.selected = "selected";
+
+            selLang.add(option);
+        }
+
+        editor.setTheme(settings.theme);
+        editor.getSession().setMode(settings.mode);
+        editor.session.setMode(settings.mode);
 
         // enable emmet on the current editor
         editor.setOption("enableEmmet", true);
 
-        function setEditorMode(modeVal, elem)
+        function setEditorMode(mode)
         {
             editor.session.setMode({
-                path: "ace/mode/"+modeVal,
+                path: mode,
                 v: Date.now()
             });
+
+            settings.mode = mode;
+            Cookies.set('flyn-syntax-settings', settings);
         }
     </script>
 </body>
