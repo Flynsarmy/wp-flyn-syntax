@@ -112,8 +112,20 @@ class Flyn_Syntax
 
     public function showCodeEditorWindow()
     {
-        require __DIR__ . '/partials/modal.php';
-        exit;
+        exit($this->require_with(
+            __DIR__ . '/partials/modal.php'
+        ));
+    }
+
+    public function require_with($filepath, $vars = array())
+    {
+        if ( !is_array($vars) )
+            $vars = array();
+
+        extract($vars);
+        ob_start();
+            require $filepath;
+        return ob_get_clean();
     }
 
     public function invalidatePostCache( $post_id )

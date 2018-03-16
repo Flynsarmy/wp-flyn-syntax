@@ -26,8 +26,7 @@
 
         <label for="lang">
             Lang:
-            <select name="lang" id="lang" onchange="setEditorMode(this.value)">
-                <?php /*
+            <select name="lang" id="lang" onchange="setEditorMode(this.value, this.options[this.selectedIndex].dataset.aceLang)">
                 <option value="4cs" data-ace-lang="text">4cs</option>
                 <option value="6502acme" data-ace-lang="text">6502acme</option>
                 <option value="6502kickass" data-ace-lang="text">6502kickass</option>
@@ -43,7 +42,7 @@
                 <option value="applescript" data-ace-lang="applescript">applescript</option>
                 <option value="apt_sources" data-ace-lang="text">apt_sources</option>
                 <option value="arm" data-ace-lang="text">arm</option>
-                <option value="asm" data-ace-lang="text">asm</option>
+                <option value="asm" data-ace-lang="assembly_x86">asm</option>
                 <option value="asp" data-ace-lang="text">asp</option>
                 <option value="asymptote" data-ace-lang="text">asymptote</option>
                 <option value="autoconf" data-ace-lang="text">autoconf</option>
@@ -54,7 +53,9 @@
                 <option value="bascomavr" data-ace-lang="text">bascomavr</option>
                 <option value="bash" data-ace-lang="batchfile">bash</option>
                 <option value="basic4gl" data-ace-lang="text">basic4gl</option>
+                <option value="bath" data-ace-lang="batchfile">batch</option>
                 <option value="bf" data-ace-lang="text">bf</option>
+                <option value="biblatex" data-ace-lang="text">biblatex</option>
                 <option value="bibtex" data-ace-lang="text">bibtex</option>
                 <option value="blitzbasic" data-ace-lang="text">blitzbasic</option>
                 <option value="bnf" data-ace-lang="text">bnf</option>
@@ -65,6 +66,7 @@
                 <option value="c_winapi" data-ace-lang="c_cpp">c_winapi</option>
                 <option value="caddcl" data-ace-lang="text">caddcl</option>
                 <option value="cadlisp" data-ace-lang="text">cadlisp</option>
+                <option value="ceylon" data-ace-lang="text">ceylon</option>
                 <option value="cfdg" data-ace-lang="text">cfdg</option>
                 <option value="cfm" data-ace-lang="text">cfm</option>
                 <option value="chaiscript" data-ace-lang="text">chaiscript</option>
@@ -135,9 +137,11 @@
                 <option value="javascript" data-ace-lang="javascript">javascript</option>
                 <option value="jcl" data-ace-lang="text">jcl</option>
                 <option value="jquery" data-ace-lang="text">jquery</option>
+                <option value="julia" data-ace-lang="text">julia</option>
                 <option value="kixtart" data-ace-lang="text">kixtart</option>
                 <option value="klonec" data-ace-lang="text">klonec</option>
                 <option value="klonecpp" data-ace-lang="text">klonecpp</option>
+                <option value="kotlin" data-ace-lang="kotlin">kotlin</option>
                 <option value="latex" data-ace-lang="latex">latex</option>
                 <option value="lb" data-ace-lang="text">lb</option>
                 <option value="ldif" data-ace-lang="text">ldif</option>
@@ -155,8 +159,12 @@
                 <option value="magiksf" data-ace-lang="text">magiksf</option>
                 <option value="make" data-ace-lang="makefile">make</option>
                 <option value="mapbasic" data-ace-lang="text">mapbasic</option>
+                <option value="mathematica" data-ace-lang="text">mathematica</option>
                 <option value="matlab" data-ace-lang="matlab">matlab</option>
+                <option value="mercury" data-ace-lang="text">mercury</option>
+                <option value="metapost" data-ace-lang="text">metapost</option>
                 <option value="mirc" data-ace-lang="text">mirc</option>
+                <option value="mk-61" data-ace-lang="text">mk-61</option>
                 <option value="mmix" data-ace-lang="text">mmix</option>
                 <option value="modula2" data-ace-lang="text">modula2</option>
                 <option value="modula3" data-ace-lang="text">modula3</option>
@@ -189,6 +197,7 @@
                 <option value="perl" data-ace-lang="perl">perl</option>
                 <option value="perl6" data-ace-lang="perl">perl6</option>
                 <option value="pf" data-ace-lang="text">pf</option>
+                <option value="phix" data-ace-lang="text">phix</option>
                 <option value="php-brief" data-ace-lang="php">php-brief</option>
                 <option value="php" data-ace-lang="php" selected='selected'>php</option>
                 <option value="pic16" data-ace-lang="text">pic16</option>
@@ -225,6 +234,7 @@
                 <option value="ruby" data-ace-lang="ruby">ruby</option>
                 <option value="rust" data-ace-lang="rust">rust</option>
                 <option value="sas" data-ace-lang="sass">sas</option>
+                <option value="sass" data-ace-lang="sass">sass</option>
                 <option value="scala" data-ace-lang="scala">scala</option>
                 <option value="scheme" data-ace-lang="scheme">scheme</option>
                 <option value="scilab" data-ace-lang="text">scilab</option>
@@ -237,13 +247,16 @@
                 <option value="sql" data-ace-lang="sql">sql</option>
                 <option value="standardml" data-ace-lang="text">standardml</option>
                 <option value="stonescript" data-ace-lang="text">stonescript</option>
+                <option value="swift" data-ace-lang="swift">swift</option>
                 <option value="systemverilog" data-ace-lang="text">systemverilog</option>
                 <option value="tcl" data-ace-lang="tcl">tcl</option>
+                <option value="tclegg" data-ace-lang="tcl">tclegg</option>
                 <option value="teraterm" data-ace-lang="text">teraterm</option>
+                <option value="texgraph" data-ace-lang="text">texgraph</option>
                 <option value="text" data-ace-lang="text">text</option>
-                <option value="twig" data-ace-lang="twig">twig</option>
                 <option value="thinbasic" data-ace-lang="text">thinbasic</option>
                 <option value="tsql" data-ace-lang="text">tsql</option>
+                <option value="twig" data-ace-lang="twig">twig</option>
                 <option value="typoscript" data-ace-lang="typescript">typoscript</option>
                 <option value="unicon" data-ace-lang="text">unicon</option>
                 <option value="upc" data-ace-lang="text">upc</option>
@@ -264,12 +277,12 @@
                 <option value="winbatch" data-ace-lang="text">winbatch</option>
                 <option value="xbasic" data-ace-lang="text">xbasic</option>
                 <option value="xml" data-ace-lang="xml">xml</option>
+                <option value="xojo" data-ace-lang="text">xojo</option>
                 <option value="xorg_conf" data-ace-lang="text">xorg_conf</option>
                 <option value="xpp" data-ace-lang="text">xpp</option>
                 <option value="yaml" data-ace-lang="yaml">yaml</option>
                 <option value="z80" data-ace-lang="text">z80</option>
                 <option value="zxbasic" data-ace-lang="text">zxbasic</option>
-                */ ?>
             </select>
         </label>
 
@@ -296,7 +309,8 @@
         var settings = Cookies.getJSON('flyn-syntax-settings');
         if ( typeof(settings) == 'undefined' )
             settings = {
-                mode: 'ace/mode/php',
+                geshi_mode: 'php',
+                ace_mode: 'php',
                 theme: 'ace/theme/monokai'
             };
 
@@ -310,37 +324,28 @@
             readOnly: true
         }]);
 
-        // Dynamically add all supported lanagues to the Language dropdown
-        var modelist = ace.require('ace/ext/modelist');
-        var selLang = document.getElementById('lang');
-        for ( var i = 0; i < modelist.modes.length; i++ )
-        {
-            var option = document.createElement('option');
-            option.text = modelist.modes[i].caption;
-            option.value = modelist.modes[i].mode;
-
-            if ( option.value == settings.mode )
-                option.selected = "selected";
-
-            selLang.add(option);
-        }
+        // set default type from cookie
+        document.getElementById('lang').value = settings.geshi_mode;
 
         editor.setTheme(settings.theme);
-        editor.getSession().setMode(settings.mode);
-        editor.session.setMode(settings.mode);
+        console.log(settings);
+        editor.getSession().setMode('ace/mode/'+settings.ace_mode);
+        editor.session.setMode('ace/mode/'+settings.ace_mode);
 
         // enable emmet on the current editor
         editor.setOption("enableEmmet", true);
 
-        function setEditorMode(mode)
+        function setEditorMode(geshi_mode, ace_mode)
         {
             editor.session.setMode({
-                path: mode,
+                path: 'ace/mode/' + ace_mode,
                 v: Date.now()
             });
 
-            settings.mode = mode;
+            settings.geshi_mode = geshi_mode;
+            settings.ace_mode = ace_mode;
             Cookies.set('flyn-syntax-settings', settings);
+            console.log('saving settings');
         }
     </script>
 </body>
