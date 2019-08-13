@@ -298,11 +298,11 @@
     </div>
     <div id="editor"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ace.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-settings_menu.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-modelist.js"></script>
-    <script src="<?= plugins_url('/vendor/nightwing/emmet-core/emmet.js', __DIR__.'/../index.php') ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.1/ext-emmet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ext-settings_menu.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ext-modelist.js"></script>
+    <script src="https://cloud9ide.github.io/emmet-core/emmet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ext-emmet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
     <script>
         var editor = ace.edit("editor");

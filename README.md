@@ -12,11 +12,15 @@ pre-filter and a late post-filter that substitutes and pulls the code snippets
 out first and then pushes them back in with highlighting at the end.  The
 result is source code formatted and highlighted the way you intended.
 
+Flyn-Syntax supports WordPress Gutenberg.
+
 Want to contribute? Flyn-Syntax can be found [on Github](https://github.com/Flynsarmy/wp-flyn-syntax). Fork and submit your pull requests today!
 
 ## Installation
 
-1. `git clone --recursive https://github.com/Flynsarmy/wp-flyn-syntax /path/to/wp-content/plugins/flyn-syntax`
+1. `git clone https://github.com/Flynsarmy/wp-flyn-syntax /path/to/wp-content/plugins/flyn-syntax`
+1. `composer install`
+1. `npm install`
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Create a post/page that contains a code snippet following the syntax from the Usage below.
 
@@ -28,14 +32,20 @@ Want to contribute? Flyn-Syntax can be found [on Github](https://github.com/Flyn
 ![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/assets/images/screenshots/java-lines.png)
 1. Ruby, with line numbers starting at 18.  
 ![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/assets/images/screenshots/ruby-18-highlight.png)
-1. Build in code editor.  
+1. Build in code editor (classic mode).  
 ![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/assets/images/screenshots/code-editor.png)
+1. Build in code editor (gutenberg).
+![](https://raw.githubusercontent.com/Flynsarmy/wp-flyn-syntax/master/assets/images/screenshots/code-editor-gutenberg.png)
 
 ## Usage
 
-### Easy Mode
+### Classic Mode
 
 Click the *Insert code block* button added by this plugin in the post editor WYSIWYG. A modal will appear with a code editor. 
+
+### Gutenberg
+
+Add a *Code* block. Set your language, starting line and line highlights on the right.
 
 ### Manual 
 Wrap code blocks with `<pre lang='LANGUAGE' line='1' escaped='1|true' highlight='1,2,5-7' src='http://github.com/my/repo'>` and `</pre>` where 
@@ -113,31 +123,7 @@ Wrap code blocks with `<pre lang='LANGUAGE' line='1' escaped='1|true' highlight=
 
 The following languages are most supported in the `lang` attribute:
 
-4cs, 6502acme, 6502kickass, 6502tasm, 68000devpac, abap, actionscript, 
-actionscript3, ada, aimms, algol68, **apache**, applescript, apt_sources, arm, asm, 
-**asp**, asymptote, autoconf, autohotkey, autoit, avisynth, awk, bascomavr, **bash**, 
-basic4gl, bf, bibtex, blitzbasic, bnf, boo, **c**, c_loadrunner, c_mac, c_winapi, 
-caddcl, cadlisp, cfdg, cfm, chaiscript, chapel, cil, clojure, cmake, cobol, 
-**coffeescript**, cpp-qt, cpp-winapi, **cpp**, **csharp**, **css**, cuesheet, d, dart, dcl, 
-dcpu16, dcs, delphi, diff, div, dos, dot, e, ecmascript, eiffel, email, epc, 
-erlang, euphoria, ezt, f1, falcon, fo, fortran, freebasic, freeswitch, fsharp, 
-gambas, gdb, genero, genie, gettext, glsl, gml, gnuplot, go, groovy, gwbasic, 
-haskell, haxe, hicest, hq9plus, **html4strict**, **html5**, icon, idl, ini, inno, 
-intercal, io, ispfpanel, j, **java**, **java5**, **javascript**, jcl, **jquery**, kixtart, 
-klonec, klonecpp, latex, lb, ldif, lisp, llvm, locobasic, logtalk, lolcode, 
-lotusformulas, lotusscript, lscript, lsl2, lua, m68k, magiksf, make, mapbasic, 
-matlab, mirc, mmix, modula2, modula3, mpasm, mxml, **mysql**, nagios, netrexx, 
-newlisp, nginx, nimrod, nsis, oberon2, **objc**, objeck, ocaml-brief, ocaml, octave, 
-oobas, oorexx, oracle11, oracle8, oxygene, oz, parasail, parigp, pascal, pcre, 
-per, **perl**, perl6, pf, php-brief, **php**, pic16, pike, pixelbender, pli, plsql, 
-postgresql, postscript, povray, powerbuilder, powershell, proftpd, progress, 
-prolog, properties, providex, purebasic, pycon, pys60, **python**, q, qbasic, qml, 
-racket, rails, rbs, rebol, reg, rexx, robots, rpmspec, rsplus, **ruby**, rust, sas, 
-scala, scheme, scilab, scl, sdlbasic, smalltalk, smarty, spark, sparql, **sql**, 
-standardml, stonescript, systemverilog, tcl, teraterm, text, thinbasic, tsql, 
-typoscript, unicon, upc, urbi, uscript, vala, **vb**, vbnet, vbscript, vedit, 
-verilog, vhdl, vim, visualfoxpro, visualprolog, whitespace, whois, winbatch, 
-xbasic, **xml**, xorg_conf, xpp, **yaml**, z80, zxbasic
+apl, clike, clojure, cmake, cobol, coffeescript, commonlisp, **css**, d, dart, diff, eiffel, erlang, go, groovy, handlebars, haskell, haskelll haxe, htmlembedded, **htmlmixed**, idl, **javascript**, jsx, julia, lua, mathematica, mirc, nginx, nsis, octave, oz, pascal, perl, **php**, powershell, properties, **python**, q, rpm, **ruby**, rust, sas, sass, scheme, **shell**, smalltalk, smarty, sparql, **sql**, swift, tcl, twig, vb, **vbscript**, verilog, vhdl, **vue**, **xml**, **yaml**, z80, 
 
 See the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html)
 for a full list of supported languages.
@@ -146,8 +132,8 @@ for a full list of supported languages.
 
 ## Styling Guidelines
 
-Flyn-Syntax colors code using the default GeSHi colors. It uses inline styling 
-to ensure code highlights work in RSS feeds and includes a default 
+Flyn-Syntax colors code using the default GeSHi colors. It uses a style tag above
+the code block to ensure code highlights work in RSS feeds and includes a default 
 `flyn-syntax.css` stylesheet for basic layout.  If you don't like the default
 styling, add the following to your themes *functions.php*:
 
@@ -175,6 +161,9 @@ This allows for a great possibility of different customizations. Be sure to
 review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 ## Changelog
+
+**v2.0** *(2019-08-12)*
+*  Added Gutenberg support
 
 **v1.1.2** *(2015-02-05)*
 

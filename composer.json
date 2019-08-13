@@ -1,23 +1,8 @@
 {
     "name": "flynsarmy/flyn-syntax",
     "description": "Flyn-Syntax provides clean syntax highlighting for embedding source code within pages or posts.",
-    "repositories": {
-        "emmet-core": {
-            "type": "package",
-            "package": {
-                "name": "nightwing/emmet-core",
-                "version": "1.6.3",
-                "source": {
-                    "url": "https://github.com/nightwing/emmet-core",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        }
-    },
     "require": {
-        "geshi/geshi": "^1.0",
-        "nightwing/emmet-core": "*"
+        "geshi/geshi": "dev-master"
     },
     "authors": [
         {

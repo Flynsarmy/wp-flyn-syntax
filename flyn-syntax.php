@@ -3,7 +3,7 @@
 Plugin Name: Flyn-Syntax
 Plugin URI: http://www.flynsarmy.com
 Description: Syntax highlighting using <a href="http://qbnz.com/highlighter/">GeSHi</a> supporting a wide range of popular languages.
-Version: 1.1.2
+Version: 2.0
 Author: Flyn San
 Author URI: http://www.flynsarmy.com
 Original Author: Steven A. Zahm, Ryan McGeary
@@ -26,11 +26,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 /*
-@todo integrate TinyMCE button support using one of these as a base:
-    http://wordpress.org/extend/plugins/flyn-syntax-integration/
-    http://wordpress.org/extend/plugins/flyn-syntax-button/
-@todo Merge this add-on plugin functionality:  http://wordpress.org/extend/plugins/flyn-syntax-download-extension/
-
 Look at these:    http://wordpress.org/extend/plugins/wp-synhighlight/
                 http://wordpress.org/extend/plugins/wp-codebox/
  */
@@ -44,10 +39,10 @@ class Flyn_Syntax
     */
     public $token;
 
-    public $matches = array();
+    public $matches = [];
 
     // Used for caching
-    public $cache = array();
+    public $cache = [];
     public $cache_generate = false;
     public $cache_generated = false;
     public $cache_match_num = 0;
@@ -70,33 +65,35 @@ class Flyn_Syntax
     public function initFilters()
     {
         //Invalidate cache whenever new/updated posts/comments are made
-        add_action( 'save_post', array( $this, 'invalidatePostCache' ) );
-        add_action( 'comment_post', array( $this, 'invalidateCommentCache' ) );
-        add_action( 'edit_comment', array( $this, 'invalidateCommentCache' ) );
+        add_action( 'save_post', [$this, 'invalidatePostCache']);
+        add_action( 'comment_post', [$this, 'invalidateCommentCache']);
+        add_action( 'edit_comment', [$this, 'invalidateCommentCache']);
 
 
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+        add_action( 'admin_enqueue_scripts', [$this, 'admin_enqueue']);
+        add_action( 'wp_enqueue_scripts', [$this, 'enqueue']);
+        add_action( 'enqueue_block_editor_assets', [$this, 'enqueue_block_editor_assets']);
 
         // Update config for WYSIWYG editor to accept the pre tag and its attributes.
-        add_filter( 'tiny_mce_before_init', array( $this, 'tinyMCEConfig') );
+        add_filter( 'tiny_mce_before_init', [$this, 'tinyMCEConfig']);
 
         // We want to run before other filters; hence, a priority of 0 was chosen.
         // Several formatting filters run at or around 6.
-        add_filter( 'the_content', array( $this, 'beforeFilter' ), 0);
-        add_filter( 'the_excerpt', array( $this, 'beforeFilter' ), 0);
-        add_filter( 'comment_text', array( $this, 'beforeFilter' ), 0);
+        add_filter( 'the_content', [$this, 'beforeFilter'], 0);
+        add_filter( 'the_excerpt', [$this, 'beforeFilter'], 0);
+        add_filter( 'comment_text', [$this, 'beforeFilter'], 0);
 
         // We want to run after other filters; hence, a priority of 99.
-        add_filter( 'the_content', array( $this, 'afterFilterContent' ), 99);
-        add_filter( 'the_excerpt', array( $this, 'afterFilterExcerpt' ), 99);
-        add_filter( 'comment_text', array( $this, 'afterFilterComment' ), 99);
+        add_filter( 'the_content', [$this, 'afterFilterContent'], 99);
+        add_filter( 'the_excerpt', [$this, 'afterFilterExcerpt'], 99);
+        add_filter( 'comment_text', [$this, 'afterFilterComment'], 99);
 
         // Load the TinyMCE plugin
-        add_filter("mce_external_plugins", array($this, 'loadTinyMCEPlugin'));
+        add_filter("mce_external_plugins", [$this, 'loadTinyMCEPlugin']);
         // Add the syntax highlighter button
-        add_filter('mce_buttons', array($this, 'addTinyMCEButton'));
+        add_filter('mce_buttons', [$this, 'addTinyMCEButton']);
         // Display the modal
-        add_action('wp_ajax_flyn-syntax-code-modal', array($this, 'showCodeEditorWindow'));
+        add_action('wp_ajax_flyn-syntax-code-modal', [$this, 'showCodeEditorWindow']);
     }
 
     public function loadTinyMCEPlugin($plugin_array) {
@@ -117,10 +114,10 @@ class Flyn_Syntax
         ));
     }
 
-    public function require_with($filepath, $vars = array())
+    public function require_with($filepath, $vars = [])
     {
         if ( !is_array($vars) )
-            $vars = array();
+            $vars = [];
 
         extract($vars);
         ob_start();
@@ -146,7 +143,29 @@ class Flyn_Syntax
     }
 
     /**
-     * Enqueue the CSS and JS.
+     * Enqueue the backend CSS and JS.
+     *
+     * @return void
+     */
+    public function admin_enqueue($hook)
+    {
+        global $post;
+
+        if ( !$post )
+            return;
+
+        if ( !in_array($hook, ['post.php', 'post-new.php']) )
+            return;
+
+        wp_enqueue_code_editor(['type' => 'text/html']);
+        wp_enqueue_style('flynsyntax-backend', plugin_dir_url( __FILE__ ) . 'assets/css/backend.css', []);
+        wp_enqueue_script('flynsyntax-codemirror-tab-control', plugin_dir_url( __FILE__ ) . 'components/codemirror/CodeMirrorTabControl.js', [], '', true);
+        wp_enqueue_script('flynsyntax-codemirror-visual-control', plugin_dir_url( __FILE__ ) . 'components/codemirror/CodeMirrorVisualControl.js', ['flynsyntax-codemirror-tab-control'], '', true);
+        wp_enqueue_script('flynsyntax-codemirror-generated-control', plugin_dir_url( __FILE__ ) . 'components/codemirror/CodeMirrorGeneratedControl.js', ['flynsyntax-codemirror-tab-control'], '', true);
+    }
+
+    /**
+     * Enqueue the frontend CSS and JS.
      *
      * @return void
      */
@@ -155,8 +174,22 @@ class Flyn_Syntax
         $url = plugin_dir_url( __FILE__ ) . 'assets/css/flyn-syntax.css';
 
         // Enqueue the CSS
-        wp_register_style( 'flyn-syntax-css', $url, array(), $this->version );
+        wp_register_style( 'flyn-syntax-css', $url, [], $this->version );
         wp_enqueue_style( 'flyn-syntax-css' );
+    }
+
+    /**
+     * Enqueue the CSS and JS.
+     *
+     * @return void
+     */
+    public function enqueue_block_editor_assets()
+    {
+        wp_enqueue_script(
+            'myguten-script',
+            plugins_url( 'assets/js/block.js', __FILE__ ),
+            array( 'wp-blocks', 'wp-codemirror', 'wp-element', 'wp-components' )
+        );
     }
 
     /**
@@ -183,8 +216,6 @@ class Flyn_Syntax
 
     public function substituteToken( &$match )
     {
-        // global $flyn_syntax_token, $flyn_syntax_matches;
-
         // No language found? This isn't a code block. Return it unaltered.
         if ( empty($match[1]) )
             return $match[0];
@@ -270,11 +301,10 @@ class Flyn_Syntax
         $escaped = trim( $match[3] );
         $highlight = $match[4];
         $caption = $this->caption( $match[5] );
-        $code = trim($match[6]);
-
-        if ( $escaped == 'true' ) $code = htmlspecialchars_decode( $code );
+        $code = htmlspecialchars_decode(trim($match[6]));
 
         $geshi = new GeSHi( $code, $language );
+        $geshi->enable_classes();
         $geshi->enable_keyword_links( FALSE );
 
         do_action_ref_array( 'flyn_syntax_init_geshi', array( &$geshi ) );
@@ -282,7 +312,7 @@ class Flyn_Syntax
         if ( ! empty( $highlight ) ) {
 
             $linespecs = explode( ',', $highlight );
-            $lines = array();
+            $lines = [];
 
             foreach ( $linespecs as $spec ) {
                 $range = explode( '-', $spec );
@@ -292,7 +322,8 @@ class Flyn_Syntax
             $geshi->highlight_lines_extra( $lines );
         }
 
-        $output = "\n" . '<div class="flyn_syntax">';
+        $output = '<style>' . $geshi->get_stylesheet() . '</style>';
+        $output .= "\n" . '<div class="flyn_syntax">';
         $output .= '<table>';
 
         if ( ! empty( $caption ) ) {
@@ -331,7 +362,7 @@ class Flyn_Syntax
     {
         // <pre lang='somelang' line='1' escaped='1|true' highlight='1,2,3,4-7' src='my string'>
         return preg_replace_callback(
-            "/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](1|0|true|false)[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|\s)+>(.*)<\/pre>\s*/siU",
+            "/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](1|0|true|false)[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|class=[\"']wp-block-flynsarmy-syntax-editor[\"']|\s)+>(.*)<\/pre>\s*/siU",
             array( $this, 'substituteToken' ),
             $content
         );
@@ -348,7 +379,7 @@ class Flyn_Syntax
 
         //Reset cache settings on each filter - we might be showing
         //multiple posts on the one page
-        $this->cache = array();
+        $this->cache = [];
         $this->cache_match_num = 0;
         $this->cache_generate = false;
 
@@ -361,7 +392,7 @@ class Flyn_Syntax
             if ( !is_array($this->cache) )
             {
                 //Make sure $this->cache is an array
-                $this->cache = array();
+                $this->cache = [];
                 //Inform the highlight() method that we're regenning
                 $this->cache_generate = true;
             }
@@ -373,7 +404,7 @@ class Flyn_Syntax
         if ( $the_post_id && $this->cache_generated && $this->cache )
             update_post_meta($the_post_id, 'flyn-syntax-cache-content', wp_slash($this->cache));
 
-        $this->matches = array();
+        $this->matches = [];
 
         return $content;
     }
@@ -389,7 +420,7 @@ class Flyn_Syntax
 
         //Reset cache settings on each filter - we might be showing
         //multiple posts on the one page
-        $this->cache = array();
+        $this->cache = [];
         $this->cache_match_num = 0;
         $this->cache_generate = false;
 
@@ -400,7 +431,7 @@ class Flyn_Syntax
             if ( !is_array($this->cache) )
             {
                 //Make sure $this->cache is an array
-                $this->cache = array();
+                $this->cache = [];
                 //Inform the highlight() method that we're regenning
                 $this->cache_generate = true;
             }
@@ -412,7 +443,7 @@ class Flyn_Syntax
         if ( is_object($the_post) && $this->cache_generated && $this->cache )
             update_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', wp_slash($this->cache));
 
-        $this->matches = array();
+        $this->matches = [];
 
         return $content;
     }
@@ -433,7 +464,7 @@ class Flyn_Syntax
             if ( !is_array($this->cache) )
             {
                 //Make sure $this->cache is an array
-                $this->cache = array();
+                $this->cache = [];
                 //Inform the highlight() method that we're regenning
                 $this->cache_generate = true;
             }
@@ -445,7 +476,7 @@ class Flyn_Syntax
         if ( is_object($the_post) && $this->cache_generated && $this->cache )
             update_comment_meta($the_post_id, 'flyn-syntax-cache-comment', wp_slash($this->cache));
 
-        $this->matches = array();
+        $this->matches = [];
 
         return $content;
     }

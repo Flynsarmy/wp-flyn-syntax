@@ -1,0 +1,3 @@
+.codemirror-tabs .controls {text-align:right;background:#f3f4f5;border-bottom:1px solid #e2e4e7}
+.codemirror-tabs .controls li {display: inline-block;padding: 0 10px;cursor:pointer}
+.codemirror-tabs .controls li.active {box-shadow:inset 0 -3px #497b8d;cursor:auto}

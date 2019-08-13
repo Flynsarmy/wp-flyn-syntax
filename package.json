@@ -1,0 +1,27 @@
+{
+  "name": "flyn-syntax",
+  "version": "1.0.0",
+  "description": "Syntax highlighting using GeSHi supporting a wide range of popular languages.",
+  "main": "index.js",
+  "scripts": {
+    "install": "gulp js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flynsarmy/wp-flyn-syntax.git"
+  },
+  "author": "Flyn San",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Flynsarmy/wp-flyn-syntax/issues"
+  },
+  "homepage": "https://github.com/Flynsarmy/wp-flyn-syntax#readme",
+  "dependencies": {
+    "codemirror": "^5.48.2"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
+    "readable-stream": "^3.4.0"
+  }
+}

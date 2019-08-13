@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af52e1db88692f9bbaecb859916e74b4",
+    "content-hash": "e07ef68bafce241b9c1a3a1378ee87ac",
     "packages": [
         {
             "name": "geshi/geshi",
-            "version": "v1.0.9.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GeSHi/geshi-1.0.git",
-                "reference": "5a7b461338d322d941986a656d4d1651452e73dd"
+                "reference": "5861c58981244ab6ee0dd337f096ff14bf15b1eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GeSHi/geshi-1.0/zipball/5a7b461338d322d941986a656d4d1651452e73dd",
-                "reference": "5a7b461338d322d941986a656d4d1651452e73dd",
+                "url": "https://api.github.com/repos/GeSHi/geshi-1.0/zipball/5861c58981244ab6ee0dd337f096ff14bf15b1eb",
+                "reference": "5861c58981244ab6ee0dd337f096ff14bf15b1eb",
                 "shasum": ""
             },
             "require-dev": {
@@ -44,23 +44,15 @@
             ],
             "description": "Generic Syntax Highlighter",
             "homepage": "http://qbnz.com/highlighter/",
-            "time": "2017-05-05T05:51:25+00:00"
-        },
-        {
-            "name": "nightwing/emmet-core",
-            "version": "1.6.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nightwing/emmet-core",
-                "reference": "master"
-            },
-            "type": "library"
+            "time": "2018-10-01T23:49:06+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "geshi/geshi": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
