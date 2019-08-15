@@ -15,7 +15,11 @@ function CodeMirrorVisualControl(props)
 	// Declare a new state variable to hold {settings: object, codemirror: object}
 	const [editor, setEditor] = React.useState();
 
+	// Set up editor
 	React.useEffect(function() {
+		if ( editor )
+			return;
+
 		var $this = ref.current;
 		var editorSettings = wp.codeEditor.defaultSettings ? _.clone( wp.codeEditor.defaultSettings ) : {};
 		editorSettings.codemirror = _.extend(
@@ -27,41 +31,42 @@ function CodeMirrorVisualControl(props)
 			}
 		);
 
-		if ( !editor )
-		{
-			// New modes expect a 'CodeMirror' global var. So alias wp.CodeMirror
-			window.CodeMirror = wp.CodeMirror;
+		// New modes expect a 'CodeMirror' global var. So alias wp.CodeMirror
+		window.CodeMirror = wp.CodeMirror;
 
-			// /wp-admin/js/code-editor.js
-			let theEditor = wp.codeEditor.initialize(ref.current.querySelector('textarea'), editorSettings);
-
-			theEditor.codemirror.on('change', function(instance, changeObj) {
-				props.setAttributes({
-					content: instance.getValue()
-				});
+		// /wp-admin/js/code-editor.js
+		let theEditor = wp.codeEditor.initialize(ref.current.querySelector('textarea'), editorSettings);
+		
+		theEditor.codemirror.on('change', function(instance, changeObj) {
+			props.setAttributes({
+				content: instance.getValue()
 			});
+		});
 
-			setEditor(theEditor);
-			$(ref.current).data('initiated', true);
+		setEditor(theEditor);
+		$(ref.current).data('initiated', true);
+	}, []);
+
+	// Set mode, add to editor if needed
+	React.useEffect(function() {
+		if ( !editor )
+			return;
+
+		// Mode isn't loaded yet. Load it asynchronously
+		if ( !(props.mode in wp.CodeMirror.modes) )
+		{
+			jQuery.ajax({
+				url: "/wp-content/plugins/flyn-syntax/assets/vendor/codemirror/mode/"+props.mode+"/"+props.mode+".js",
+				dataType: 'script',
+				success: function() {
+					editor.codemirror.setOption('mode', props.mode);
+				},
+				async: true
+			});
 		}
 		else
-		{
-			// Mode isn't loaded yet. Load it asynchronously
-			if ( !(props.mode in wp.CodeMirror.modes) )
-			{
-				jQuery.ajax({
-					url: "/wp-content/plugins/flyn-syntax/assets/vendor/codemirror/mode/"+props.mode+"/"+props.mode+".js",
-					dataType: 'script',
-					success: function() {
-						editor.codemirror.setOption('mode', props.mode);
-					},
-					async: true
-				});
-			}
-			else
-				editor.codemirror.setOption('mode', props.mode);
-		}
-	});
+			editor.codemirror.setOption('mode', props.mode);
+	}, [props.mode, editor]);
 
 	return el(
 		'BaseControl',
