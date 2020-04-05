@@ -2,3 +2,4 @@
 vendor
 assets/vendor
 node_modules
+assets/js/build/block.min.js.map
