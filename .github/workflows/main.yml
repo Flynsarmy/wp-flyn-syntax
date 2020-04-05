@@ -52,7 +52,7 @@ jobs:
 
     - name: Install PHP dependencies
       uses: php-actions/composer@v1
-      witH:
+      with:
         command: install --dev
 
     - name: Install JS dependencies
