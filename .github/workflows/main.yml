@@ -51,9 +51,7 @@ jobs:
         node-version: '10.x'
 
     - name: Install PHP dependencies
-      uses: php-actions/composer@v1
-      with:
-        command: composer install --dev
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --dev
 
     - name: Install JS dependencies
       run: npm install
