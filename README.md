@@ -1,5 +1,8 @@
 # Flyn Syntax
 
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+![Build Status](https://github.com/Flynsarmy/wp-flyn-syntax/workflows/CI/badge.svg)
+
 > Flyn-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
 
 Flyn-Syntax provides clean syntax highlighting using
