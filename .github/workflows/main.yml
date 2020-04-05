@@ -52,9 +52,11 @@ jobs:
 
     - name: Install PHP dependencies
       uses: php-actions/composer@v1
+      witH:
+        command: install --dev
 
     - name: Install JS dependencies
-      run: npm install --dev
+      run: npm install
 
     - name: Lint PHP
       run: vendor/bin/phpcs

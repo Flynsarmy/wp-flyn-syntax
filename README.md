@@ -20,7 +20,7 @@ Want to contribute? Flyn-Syntax can be found [on Github](https://github.com/Flyn
 
 1. `git clone https://github.com/Flynsarmy/wp-flyn-syntax /path/to/wp-content/plugins/flyn-syntax`
 1. `composer install`
-1. `npm install`
+1. `npm install --production`
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Create a post/page that contains a code snippet following the syntax from the Usage below.
 
