@@ -1,0 +1,33 @@
+# This is a sample build configuration for JavaScript.
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:latest
+
+pipelines:
+  branches:
+    master:
+      - step:
+        name: Check JS Requirements
+        caches:
+          - node
+        script:
+            - npm install
+            - npm run check-engines
+            - npm run check-licenses
+      - step:
+        name: Lint JS
+        caches:
+          - node
+        script: # Modify the commands below to build your repository.
+          - npm install
+          - npm run lint:pkg-json
+          - npm run lint:js
+      - step:
+        name: Lint PHP
+        caches:
+          - composer
+        script:
+          - composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --dev
+          - vendor/bin/phpcs

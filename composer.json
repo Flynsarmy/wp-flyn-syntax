@@ -1,13 +1,18 @@
 {
     "name": "flynsarmy/flyn-syntax",
     "description": "Flyn-Syntax provides clean syntax highlighting for embedding source code within pages or posts.",
-    "require": {
-        "geshi/geshi": "dev-master"
-    },
     "authors": [
         {
             "name": "flynsarmy",
             "email": "flynsarmy@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "FlynSyntax\\": "FlynSyntax"
+        }
+    },
+    "require": {
+        "geshi/geshi": "dev-master"
+    }
 }
