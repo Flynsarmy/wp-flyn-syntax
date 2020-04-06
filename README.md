@@ -1,7 +1,8 @@
 # Flyn Syntax
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-![Build Status](https://github.com/Flynsarmy/wp-flyn-syntax/workflows/CI/badge.svg)
+![Build Status - PHP](https://github.com/Flynsarmy/wp-flyn-syntax/workflows/CI%20-%20PHP/badge.svg)
+![Build Status - JS](https://github.com/Flynsarmy/wp-flyn-syntax/workflows/CI%20-%20JS/badge.svg)
 
 > Flyn-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
 
@@ -47,7 +48,7 @@ Click the *Insert code block* button added by this plugin in the post editor WYS
 
 ### Gutenberg
 
-Add a *Code* block. Set your language, starting line and line highlights on the right.
+Add a *Code Block* block. Set your language, starting line and line highlights on the right.
 
 ### Manual 
 Wrap code blocks with `<pre lang='LANGUAGE' line='1' escaped='1|true' highlight='1,2,5-7' src='http://github.com/my/repo'>` and `</pre>` where 
@@ -163,6 +164,11 @@ This allows for a great possibility of different customizations. Be sure to
 review the [GeSHi Documentation](http://qbnz.com/highlighter/geshi-doc.html).
 
 ## Changelog
+
+**v2.1** *(2020-04-07)*
+*  Improved Gutenberg support
+*  Updated build process
+*  Updated screenshot
 
 **v2.0** *(2019-08-12)*
 *  Added Gutenberg support
