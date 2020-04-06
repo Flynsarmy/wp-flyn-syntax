@@ -1,6 +1,6 @@
 # https://freek.dev/1546-using-github-actions-to-run-the-tests-of-laravel-projects-and-packages
 # This is a basic workflow to help you get started with Actions
-name: CI
+name: CI - PHP
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -16,7 +16,7 @@ jobs:
       matrix:
         php: [7.4]
 
-    name: PHP${{ matrix.php }} 
+    name: PHP-${{ matrix.php }} 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -30,14 +30,6 @@ jobs:
         path: vendor
         key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
 
-    - name: Cache Node dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -45,29 +37,8 @@ jobs:
         extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
         coverage: none
 
-    - name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-
     - name: Install PHP dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --dev
 
-    - name: Install JS dependencies
-      run: npm install
-
     - name: Lint PHP
       run: vendor/bin/phpcs
-
-    - name: Check JS engine
-      run: npm run check-engines
-
-    - name: Check JS license
-      run: npm run check-licenses
-
-    - name: Lint package.json
-      run: npm run lint:pkg-json
-
-    - name: Lint JS
-      run: npm run lint:js
-    

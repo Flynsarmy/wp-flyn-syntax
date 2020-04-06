@@ -51,11 +51,11 @@ const Visual = props => {
         if (!(props.attributes.mode in wp.CodeMirror.modes)) {
             $.ajax({
                 url:
-                    "/wp-content/plugins/flyn-syntax/assets/vendor/codemirror/mode/" +
+                    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/" +
                     props.attributes.mode +
                     "/" +
                     props.attributes.mode +
-                    ".js",
+                    ".min.js",
                 dataType: "script",
                 success() {
                     editor.codemirror.setOption("mode", props.attributes.mode);

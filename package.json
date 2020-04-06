@@ -20,10 +20,6 @@
     "url": "https://github.com/Flynsarmy/wp-flyn-syntax/issues"
   },
   "main": "index.js",
-  "dependencies": {
-    "codemirror": "^5.52.2",
-    "uglifyjs-folder": "^1.5.2"
-  },
   "devDependencies": {
     "@wordpress/block-editor": "^3.8.0",
     "@wordpress/blocks": "^6.13.0",
@@ -48,7 +44,6 @@
     "lint:md:js": "wp-scripts lint-md-js",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "packages-update": "wp-scripts packages-update",
-    "postinstall": "uglifyjs-folder node_modules/codemirror/mode -x .js -eo assets/vendor/codemirror/mode",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   }
