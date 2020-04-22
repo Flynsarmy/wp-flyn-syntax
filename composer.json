@@ -1,6 +1,8 @@
 {
     "name": "flynsarmy/flyn-syntax",
     "description": "Flyn-Syntax provides clean syntax highlighting for embedding source code within pages or posts.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
     "authors": [
         {
             "name": "flynsarmy",
