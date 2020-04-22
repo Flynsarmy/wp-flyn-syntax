@@ -22,6 +22,7 @@ const Visual = props => {
         editorSettings.codemirror = extend({}, editorSettings.codemirror, {
             mode: props.attributes.mode,
             firstLineNumber: props.attributes.startingLine,
+            lineWrapping: false,
             lint: false
         });
 
