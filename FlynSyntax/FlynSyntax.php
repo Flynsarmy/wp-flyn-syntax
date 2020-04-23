@@ -90,7 +90,7 @@ class FlynSyntax
 
     public function requireWith(string $filepath, array $vars = []): string
     {
-        if (! is_array($vars)) {
+        if (!is_array($vars)) {
             $vars = [];
         }
 
@@ -113,7 +113,7 @@ class FlynSyntax
 
     public function inludeDependencies()
     {
-        if (! defined('GESHI_VERSION')) {
+        if (!defined('GESHI_VERSION')) {
             require_once __DIR__ . '/../vendor/geshi/geshi/src/geshi.php';
         }
     }
@@ -214,7 +214,7 @@ class FlynSyntax
         $path    = pathinfo($parsed['path']);
         $caption = '';
 
-        if (! isset($path['filename'])) {
+        if (!isset($path['filename'])) {
             return;
         }
 
@@ -256,12 +256,12 @@ class FlynSyntax
         $this->cache_generated = false;
 
         // Do we have cache? Serve it!
-        if (isset($this->cache[ $this->cache_match_num ])) {
-            return '<!-- from cache -->' . $this->cache[ $this->cache_match_num ] . '<!-- end from cahe -->';
+        if (isset($this->cache[$this->cache_match_num])) {
+            return '<!-- from cache -->' . $this->cache[$this->cache_match_num] . '<!-- end from cahe -->';
         }
 
         $i     = intval($match[1]);
-        $match = $this->matches[ $i ];
+        $match = $this->matches[$i];
 
         $language  = strtolower(trim($match[1]));
         $line      = intval(trim($match[2]));
@@ -276,7 +276,7 @@ class FlynSyntax
 
         do_action_ref_array('flyn_syntax_init_geshi', [&$geshi]);
 
-        if (! empty($highlight)) {
+        if (!empty($highlight)) {
             $linespecs = explode(',', $highlight);
             $lines     = [];
 
@@ -288,7 +288,7 @@ class FlynSyntax
             // "highlight" attribute is relative.
             // When we start on line 3, highlight="4-5" means second and third lines.
             if ($line > 1) {
-                $lines = array_map(function ($highlightLine) use ($line) {
+                $lines = array_map(function($highlightLine) use ($line) {
                     return $highlightLine - ($line - 1);
                 }, $lines);
             }
@@ -300,7 +300,7 @@ class FlynSyntax
         $output .= "\n" . '<div class="flyn_syntax">';
         $output .= '<table>';
 
-        if (! empty($caption)) {
+        if (!empty($caption)) {
             $output .= '<caption>' . $caption . '</caption>';
         }
 
@@ -317,7 +317,7 @@ class FlynSyntax
 
         if ($this->cache_generate) {
             $this->cache_generated                 = true;
-            $this->cache[ $this->cache_match_num ] = $output;
+            $this->cache[$this->cache_match_num] = $output;
         }
 
         return $output;
@@ -336,14 +336,14 @@ class FlynSyntax
         return preg_replace_callback(
             // phpcs:disable Generic.Files.LineLength.TooLong
             "/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](1|0|true|false)[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|class=[\"']wp-block-flynsarmy-syntax-editor[\"']|\s)+>(.*)<\/pre>\s*/siU",
-            function ($match) {
+            function($match) {
                 // No language found? This isn't a code block. Return it unaltered.
                 if (empty($match[1])) {
                     return $match[0];
                 }
         
                 $i                   = count($this->matches);
-                $this->matches[ $i ] = $match;
+                $this->matches[$i] = $match;
         
                 return "\n\n<p>" . $this->token . sprintf('%03d', $i) . "</p>\n\n";
             },
@@ -372,7 +372,7 @@ class FlynSyntax
 
             $this->cache = get_post_meta($the_post_id, 'flyn-syntax-cache-content', true);
 
-            if (! is_array($this->cache)) {
+            if (!is_array($this->cache)) {
                 // Make sure $this->cache is an array
                 $this->cache = [];
                 // Inform the highlight() method that we're regenning
@@ -411,7 +411,7 @@ class FlynSyntax
         if (is_object($the_post)) {
             $this->cache = get_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', true);
 
-            if (! is_array($this->cache)) {
+            if (!is_array($this->cache)) {
                 // Make sure $this->cache is an array
                 $this->cache = [];
                 // Inform the highlight() method that we're regenning
