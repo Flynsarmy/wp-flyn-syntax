@@ -58,46 +58,6 @@ class FlynSyntax
         add_filter('the_content', [$this, 'afterFilterContent'], 99);
         add_filter('the_excerpt', [$this, 'afterFilterExcerpt'], 99);
         add_filter('comment_text', [$this, 'afterFilterComment'], 99);
-
-        // Load the TinyMCE plugin
-        add_filter('mce_external_plugins', [$this, 'loadTinyMCEPlugin']);
-        // Add the syntax highlighter button
-        add_filter('mce_buttons', [$this, 'addTinyMCEButton']);
-        // Display the modal
-        add_action('wp_ajax_flyn-syntax-code-modal', [$this, 'showCodeEditorWindow']);
-    }
-
-    public function loadTinyMCEPlugin(array $plugin_array): array
-    {
-        $plugin_array['flynsyntaxcodemodal'] = plugin_dir_url(__FILE__) . 'assets/js/code-modal.js';
-        return $plugin_array;
-    }
-
-    public function addTinyMCEButton(array $buttons): array
-    {
-        array_push($buttons, 'separator', 'flynsyntaxcodemodal');
-        return $buttons;
-    }
-
-    public function showCodeEditorWindow()
-    {
-        exit(
-            $this->requireWith(
-                __DIR__ . '/../partials/modal.php'
-            )
-        );
-    }
-
-    public function requireWith(string $filepath, array $vars = []): string
-    {
-        if (! is_array($vars)) {
-            $vars = [];
-        }
-
-        extract($vars);
-        ob_start();
-        require $filepath;
-        return ob_get_clean();
     }
 
     public function invalidatePostCache(int $post_id)
@@ -113,7 +73,7 @@ class FlynSyntax
 
     public function inludeDependencies()
     {
-        if (! defined('GESHI_VERSION')) {
+        if (!defined('GESHI_VERSION')) {
             require_once __DIR__ . '/../vendor/geshi/geshi/src/geshi.php';
         }
     }
@@ -137,7 +97,7 @@ class FlynSyntax
 
         wp_enqueue_code_editor(['type' => 'text/html']);
         wp_enqueue_style(
-            'flynsyntax-backend',
+            'flyn-syntax-backend',
             plugin_dir_url(__DIR__ . "/../index.php") . 'assets/css/backend.css',
             []
         );
@@ -214,7 +174,7 @@ class FlynSyntax
         $path    = pathinfo($parsed['path']);
         $caption = '';
 
-        if (! isset($path['filename'])) {
+        if (!isset($path['filename'])) {
             return;
         }
 
@@ -229,10 +189,11 @@ class FlynSyntax
         }
 
         /*
-         $caption . $path["filename"];
+        $caption . $path["filename"];
         if (isset($path["extension"])) {
             $caption .= "." . $path["extension"];
-        }*/
+        }
+        */
 
         if (isset($parsed['scheme'])) {
             $caption .= '</a>';
@@ -276,7 +237,7 @@ class FlynSyntax
 
         do_action_ref_array('flyn_syntax_init_geshi', [&$geshi]);
 
-        if (! empty($highlight)) {
+        if (!empty($highlight)) {
             $linespecs = explode(',', $highlight);
             $lines     = [];
 
@@ -300,7 +261,7 @@ class FlynSyntax
         $output .= "\n" . '<div class="flyn_syntax">';
         $output .= '<table>';
 
-        if (! empty($caption)) {
+        if (!empty($caption)) {
             $output .= '<caption>' . $caption . '</caption>';
         }
 
@@ -372,7 +333,7 @@ class FlynSyntax
 
             $this->cache = get_post_meta($the_post_id, 'flyn-syntax-cache-content', true);
 
-            if (! is_array($this->cache)) {
+            if (!is_array($this->cache)) {
                 // Make sure $this->cache is an array
                 $this->cache = [];
                 // Inform the highlight() method that we're regenning
@@ -411,7 +372,7 @@ class FlynSyntax
         if (is_object($the_post)) {
             $this->cache = get_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', true);
 
-            if (! is_array($this->cache)) {
+            if (!is_array($this->cache)) {
                 // Make sure $this->cache is an array
                 $this->cache = [];
                 // Inform the highlight() method that we're regenning
