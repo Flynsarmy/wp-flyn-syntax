@@ -214,12 +214,12 @@ class FlynSyntax
         $this->cache_generated = false;
 
         // Do we have cache? Serve it!
-        if (isset($this->cache[ $this->cache_match_num ])) {
-            return '<!-- from cache -->' . $this->cache[ $this->cache_match_num ] . '<!-- end from cahe -->';
+        if (isset($this->cache[$this->cache_match_num])) {
+            return '<!-- from cache -->' . $this->cache[$this->cache_match_num] . '<!-- end from cahe -->';
         }
 
         $i     = intval($match[1]);
-        $match = $this->matches[ $i ];
+        $match = $this->matches[$i];
 
         $language  = strtolower(trim($match[1]));
         $line      = intval(trim($match[2]));
@@ -275,7 +275,7 @@ class FlynSyntax
 
         if ($this->cache_generate) {
             $this->cache_generated                 = true;
-            $this->cache[ $this->cache_match_num ] = $output;
+            $this->cache[$this->cache_match_num] = $output;
         }
 
         return $output;
@@ -301,7 +301,7 @@ class FlynSyntax
                 }
         
                 $i                   = count($this->matches);
-                $this->matches[ $i ] = $match;
+                $this->matches[$i] = $match;
         
                 return "\n\n<p>" . $this->token . sprintf('%03d', $i) . "</p>\n\n";
             },
