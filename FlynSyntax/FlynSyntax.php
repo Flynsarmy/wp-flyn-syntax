@@ -328,11 +328,11 @@ class FlynSyntax
         if (is_object($the_post)) {
             $the_post_id = $post->ID;
 
-            $this->cache = get_post_meta($the_post_id, 'flyn-syntax-cache-content', true);
+            $cache = get_post_meta($the_post_id, 'flyn-syntax-cache-content', true);
 
-            if (!is_array($this->cache)) {
-                // Make sure $this->cache is an array
-                $this->cache = [];
+            if (is_array($cache)) {
+                $this->cache = $cache;
+            } else {
                 // Inform the highlight() method that we're regenning
                 $this->cache_generate = true;
             }
@@ -341,7 +341,7 @@ class FlynSyntax
         $content = $this->afterFilter($content);
 
         // Update cache if we're generating and were there <pre> tags generated
-        if ($the_post_id && $this->cache_generated && $this->cache) {
+        if ($the_post_id && $this->cache_generated && !empty($this->cache)) {
             update_post_meta($the_post_id, 'flyn-syntax-cache-content', wp_slash($this->cache));
         }
 
@@ -367,11 +367,11 @@ class FlynSyntax
         $this->cache_generate  = false;
 
         if (is_object($the_post)) {
-            $this->cache = get_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', true);
+            $cache = get_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', true);
 
-            if (!is_array($this->cache)) {
-                // Make sure $this->cache is an array
-                $this->cache = [];
+            if (is_array($cache)) {
+                $this->cache = $cache;
+            } else {
                 // Inform the highlight() method that we're regenning
                 $this->cache_generate = true;
             }
@@ -400,11 +400,11 @@ class FlynSyntax
         $the_post_id = $comment->comment_ID;
 
         if (is_object($the_post)) {
-            $this->cache = get_comment_meta($the_post_id, 'flyn-syntax-cache-comment', true);
+            $cache = get_comment_meta($the_post_id, 'flyn-syntax-cache-comment', true);
 
-            if (!is_array($this->cache)) {
-                // Make sure $this->cache is an array
-                $this->cache = [];
+            if (is_array($cache)) {
+                $this->cache = $cache;
+            } else {
                 // Inform the highlight() method that we're regenning
                 $this->cache_generate = true;
             }
