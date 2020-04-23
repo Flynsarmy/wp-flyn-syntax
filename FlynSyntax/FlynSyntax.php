@@ -164,10 +164,12 @@ class FlynSyntax
      */
     public function enqueueBlockEditorAssets()
     {
+        $asset = require __DIR__.'/../assets/js/build/block.min.asset.php';
         wp_enqueue_script(
             'flyn-syntax-js',
             plugins_url('assets/js/build/block.min.js', __DIR__ . "/../index.php"),
-            ['jquery', 'lodash', 'wp-blocks', 'wp-codemirror', 'wp-editor', 'wp-element', 'wp-components']
+            $asset['dependencies'],
+            $asset['version'],
         );
     }
 
