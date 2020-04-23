@@ -274,7 +274,7 @@ class FlynSyntax
         $output .= '</div>' . "\n";
 
         if ($this->cache_generate) {
-            $this->cache_generated                 = true;
+            $this->cache_generated = true;
             $this->cache[$this->cache_match_num] = $output;
         }
 
@@ -300,7 +300,7 @@ class FlynSyntax
                     return $match[0];
                 }
         
-                $i                   = count($this->matches);
+                $i = count($this->matches);
                 $this->matches[$i] = $match;
         
                 return "\n\n<p>" . $this->token . sprintf('%03d', $i) . "</p>\n\n";
