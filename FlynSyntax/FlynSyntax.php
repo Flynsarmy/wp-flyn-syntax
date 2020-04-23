@@ -4,20 +4,17 @@ namespace FlynSyntax;
 
 class FlynSyntax
 {
-    public $version = '1.1';
+    public string $version = '1.1';
 
-    /**
-     * @var (object) WP_Syntax stores the instance of this class.
-     */
-    public $token;
+    public string $token;
 
-    public $matches = [];
+    public array $matches = [];
 
     // Used for caching
-    public $cache           = [];
-    public $cache_generate  = false;
-    public $cache_generated = false;
-    public $cache_match_num = 0;
+    public array $cache = [];
+    public bool $cache_generate  = false;
+    public bool $cache_generated = false;
+    public int $cache_match_num = 0;
 
     /**
      * A dummy constructor to prevent WP_Syntax from being loaded more than once.
@@ -206,10 +203,10 @@ class FlynSyntax
      * Create a highlighted code block from a given unique identifier regex match
      * created in beforeFilter
      *
-     * @param $match         [ 0 => full_str, 1 => match_id ]
+     * @param array $match         [ 0 => full_str, 1 => match_id ]
      * @return string
      */
-    public function highlight($match)
+    public function highlight(array $match): string
     {
         // Keep track of which <pre> tag we're up to
         $this->cache_match_num++;
@@ -226,7 +223,7 @@ class FlynSyntax
 
         $language  = strtolower(trim($match[1]));
         $line      = intval(trim($match[2]));
-        $escaped   = trim($match[3]);
+        //$escaped   = trim($match[3]);
         $highlight = $match[4];
         $caption   = $this->caption($match[5]);
         $code      = htmlspecialchars_decode(trim($match[6]));
@@ -288,7 +285,7 @@ class FlynSyntax
      * Replace the <pre> tag with a <p>some_unique_identifier</p> string so that other filters
      * won't interfere with our code block.
      *
-     * @param $content      Post content
+     * @param string $content      Post content
      * @return string
      */
     public function beforeFilter(string $content): string
@@ -416,7 +413,7 @@ class FlynSyntax
         $content = $this->afterFilter($content);
 
         // Update cache if we're generating and were there <pre> tags generated
-        if (is_object($the_post) && $this->cache_generated && $this->cache) {
+        if (is_object($the_post) && $this->cache_generated && !empty($this->cache)) {
             update_comment_meta($the_post_id, 'flyn-syntax-cache-comment', wp_slash($this->cache));
         }
 
