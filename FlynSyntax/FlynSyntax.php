@@ -172,10 +172,20 @@ class FlynSyntax
      */
     public function beforeFilter(string $content): string
     {
+        $params = [
+            'lang' => "lang=[\"'](?P<lang>[\w-]+)[\"']",
+            'line' => "line=[\"'](?P<line>\d*)[\"']",
+            'escaped' => "escaped=[\"'](?P<escaped>1|0|true|false)[\"']",
+            'highlight' => "highlight=[\"'](?P<highlight>(?:\d+[,-])*\d+)[\"']",
+            'src' => "src=[\"'](?P<src> [^\"']+)[\"']",
+            'class' => "class=[\"']wp-block-flynsarmy-syntax-editor[\"']",
+        ];
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        $regex = "/\s*<pre(?:{$params['lang']}|{$params['line']}|{$params['escaped']}|{$params['highlight']}|{$params['src']}|{$params['class']}|\s)+>(?P<code>.*)<\/pre>\s*/siU";
+
         // <pre lang='somelang' line='1' escaped='1|true' highlight='1,2,3,4-7' src='my string'>
         return preg_replace_callback(
-            // phpcs:disable Generic.Files.LineLength.TooLong
-            "/\s*<pre(?:lang=[\"']([\w-]+)[\"']|line=[\"'](\d*)[\"']|escaped=[\"'](1|0|true|false)[\"']|highlight=[\"']((?:\d+[,-])*\d+)[\"']|src=[\"']([^\"']+)[\"']|class=[\"']wp-block-flynsarmy-syntax-editor[\"']|\s)+>(.*)<\/pre>\s*/siU",
+            $regex,
             function ($match) {
                 // No language found? This isn't a code block. Return it unaltered.
                 if (empty($match[1])) {
@@ -224,7 +234,7 @@ class FlynSyntax
         $content = $this->afterFilter($content);
 
         // Update cache if we're generating and were there <pre> tags generated
-        if (is_object($post) && $this->cache_generated && $this->cache) {
+        if (is_object($post) && $this->cache_generated && !empty($this->cache)) {
             update_post_meta($post->ID, 'flyn-syntax-cache-excerpt', wp_slash($this->cache));
         }
 

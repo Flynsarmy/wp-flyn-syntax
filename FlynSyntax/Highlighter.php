@@ -13,7 +13,7 @@ class Highlighter
     public int $firstLine = 0;
 
     // List of line numbers to highlight
-    public array $linesToHighlight = [];
+    public array $highlightLines = [];
 
     // The syntax highlighter
     public GeSHi $geshi;
@@ -24,28 +24,46 @@ class Highlighter
     // Code block to highlight
     public string $code = '';
 
-    public function __construct(array $match)
+    /**
+     * Constructor method
+     *
+     * @param array $match [
+     *      lang => string,        GeSHi language
+     *      line => int,           Starting line number. 0 for no line numbers
+     *      highlight => string,   Highlight line ranges
+     *      [src => string],       Caption to display above code block
+     *      code => string,        Code to highlight
+     * ]
+     */
+    public function __construct(array $match = [])
     {
-        $this->language         = strtolower(trim($match[1]));
-        $this->firstLine        = intval(trim($match[2]));
+        $this->language         = strtolower(trim($this->arrayGet($match, 'lang', '')));
+        $this->firstLine        = intval(trim($this->arrayGet($match, 'line', 0)));
         //$escaped              = trim($match[3]);
-        $lines = $this->parseLineRanges($match[4]);
+        $lines = $this->parseHighlightLines($this->arrayGet($match, 'highlight', ''));
         $lines = $this->getRelativeLines($lines, $this->firstLine);
-        $this->linesToHighlight = $lines;
-        $this->caption          = $this->caption($match[5]);
-        $this->code             = htmlspecialchars_decode(trim($match[6]));
+        $this->highlightLines   = $lines;
+        $this->caption          = $this->caption($this->arrayGet($match, 'src', ''));
+        $this->code             = htmlspecialchars_decode(trim($this->arrayGet($match, 'code', '')));
 
         $this->geshi = $this->initGeshi($this->language, $this->code);
     }
 
+    /**
+     * Set up GeSHi - our syntax highlighter.
+     *
+     * @param string $language
+     * @param string $code
+     * @return GeSHi
+     */
     public function initGeshi(string $language, string $code): GeSHi
     {
         $geshi = new GeSHi($code, $language);
         $geshi->enable_classes();
         $geshi->enable_keyword_links(false);
 
-        if (!empty($this->linesToHighlight)) {
-            $geshi->highlight_lines_extra($this->linesToHighlight);
+        if (!empty($this->highlightLines)) {
+            $geshi->highlight_lines_extra($this->highlightLines);
         }
 
         // This is required because the function doesn't exist in PHPUnit
@@ -63,7 +81,7 @@ class Highlighter
      * @param string $lineRanges    e.g 1-5, 9, 7, 19-30
      * @return array All line numbers to highlight
      */
-    public function parseLineRanges(string $lineRanges): array
+    public function parseHighlightLines(string $lineRanges): array
     {
         $lines = [];
 
@@ -203,5 +221,23 @@ class Highlighter
         }
 
         return $caption;
+    }
+
+    /**
+     * Helper function for returning array values if they exist or a given
+     * default if they don't.
+     *
+     * @param array $array
+     * @param mixed $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function arrayGet(array $array, $key, $default = null)
+    {
+        if (isset($array[$key])) {
+            return $array[$key];
+        }
+
+        return $default;
     }
 }
