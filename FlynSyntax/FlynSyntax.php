@@ -2,6 +2,8 @@
 
 namespace FlynSyntax;
 
+use FlynSyntax\Highlighter;
+
 class FlynSyntax
 {
     public string $version = '1.1';
@@ -41,9 +43,6 @@ class FlynSyntax
         add_action('admin_enqueue_scripts', [$this, 'adminEnqueue']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue']);
         add_action('enqueue_block_editor_assets', [$this, 'enqueueBlockEditorAssets']);
-
-        // Update config for WYSIWYG editor to accept the pre tag and its attributes.
-        add_filter('tiny_mce_before_init', [$this, 'tinyMCEConfig']);
 
         // We want to run before other filters; hence, a priority of 0 was chosen.
         // Several formatting filters run at or around 6.
@@ -131,82 +130,13 @@ class FlynSyntax
     }
 
     /**
-     * Update the TinyMCE config to add support for the pre tag and its attributes.
-     *
-     * @access private
-     * @since 0.9.13
-     * @param  (array) $init The TinyMCE config.
-     * @return (array)
-     */
-    public function tinyMCEConfig(array $init): array
-    {
-        $ext = 'pre[id|name|class|style|lang|line|escaped|highlight|src]';
-
-        if (isset($init['extended_valid_elements'])) {
-            $init['extended_valid_elements'] .= ',' . $ext;
-        } else {
-            $init['extended_valid_elements'] = $ext;
-        }
-
-        return $init;
-    }
-
-    public function lineNumbers($code, $start)
-    {
-        $line_count = count(explode("\n", $code));
-        $output     = '<pre>';
-
-        for ($i = 0; $i < $line_count; $i++) {
-            $output .= ($start + $i) . "\n";
-        }
-
-        $output .= '</pre>';
-
-        return $output;
-    }
-
-    public function caption($url)
-    {
-        $parsed  = parse_url($url);
-        $path    = pathinfo($parsed['path']);
-        $caption = '';
-
-        if (!isset($path['filename'])) {
-            return;
-        }
-
-        if (isset($parsed['scheme'])) {
-            $caption .= '<a href="' . $url . '">';
-        }
-
-        if (isset($parsed['host']) && $parsed['host'] == 'github.com') {
-            $caption .= substr($parsed['path'], strpos($parsed['path'], '/', 1)); /* strip github.com username */
-        } else {
-            $caption .= $parsed['path'];
-        }
-
-        /*
-        $caption . $path["filename"];
-        if (isset($path["extension"])) {
-            $caption .= "." . $path["extension"];
-        }
-        */
-
-        if (isset($parsed['scheme'])) {
-            $caption .= '</a>';
-        }
-
-        return $caption;
-    }
-
-    /**
      * Create a highlighted code block from a given unique identifier regex match
      * created in beforeFilter
      *
      * @param array $match         [ 0 => full_str, 1 => match_id ]
      * @return string
      */
-    public function highlight(array $match): string
+    public function highlight(array $match_details): string
     {
         // Keep track of which <pre> tag we're up to
         $this->cache_match_num++;
@@ -218,61 +148,13 @@ class FlynSyntax
             return '<!-- from cache -->' . $this->cache[$this->cache_match_num] . '<!-- end from cahe -->';
         }
 
-        $i     = intval($match[1]);
+        $i     = intval($match_details[1]);
         $match = $this->matches[$i];
 
-        $language  = strtolower(trim($match[1]));
-        $line      = intval(trim($match[2]));
-        //$escaped   = trim($match[3]);
-        $highlight = $match[4];
-        $caption   = $this->caption($match[5]);
-        $code      = htmlspecialchars_decode(trim($match[6]));
+        $highlighter = new Highlighter($match);
 
-        $geshi = new \GeSHi($code, $language);
-        $geshi->enable_classes();
-        $geshi->enable_keyword_links(false);
-
-        do_action_ref_array('flyn_syntax_init_geshi', [&$geshi]);
-
-        if (!empty($highlight)) {
-            $linespecs = explode(',', $highlight);
-            $lines     = [];
-
-            foreach ($linespecs as $spec) {
-                $range = explode('-', $spec);
-                $lines = array_merge($lines, count($range) == 2 ? range($range[0], $range[1]) : $range);
-            }
-
-            // "highlight" attribute is relative.
-            // When we start on line 3, highlight="4-5" means second and third lines.
-            if ($line > 1) {
-                $lines = array_map(function ($highlightLine) use ($line) {
-                    return $highlightLine - ($line - 1);
-                }, $lines);
-            }
-
-            $geshi->highlight_lines_extra($lines);
-        }
-
-        $output  = '<style>' . $geshi->get_stylesheet() . '</style>';
-        $output .= "\n" . '<div class="flyn_syntax">';
-        $output .= '<table>';
-
-        if (!empty($caption)) {
-            $output .= '<caption>' . $caption . '</caption>';
-        }
-
-        $output .= '<tr>';
-
-        if ($line) {
-            $output .= '<td class="line_numbers">' . $this->lineNumbers($code, $line) . '</td>';
-        }
-
-        $output .= '<td class="code">';
-        $output .= $geshi->parse_code();
-        $output .= '</td></tr></table>';
-        $output .= '</div>' . "\n";
-
+        $output = $highlighter->render();
+        
         if ($this->cache_generate) {
             $this->cache_generated = true;
             $this->cache[$this->cache_match_num] = $output;
@@ -316,33 +198,13 @@ class FlynSyntax
         }
 
         global $post;
-        $the_post    = $post;
-        $the_post_id = 0;
-
-        // Reset cache settings on each filter - we might be showing
-        // multiple posts on the one page
-        $this->cache           = [];
-        $this->cache_match_num = 0;
-        $this->cache_generate  = false;
-
-        if (is_object($the_post)) {
-            $the_post_id = $post->ID;
-
-            $cache = get_post_meta($the_post_id, 'flyn-syntax-cache-content', true);
-
-            if (is_array($cache)) {
-                $this->cache = $cache;
-            } else {
-                // Inform the highlight() method that we're regenning
-                $this->cache_generate = true;
-            }
-        }
-
+        
+        $this->setupCache($post);
         $content = $this->afterFilter($content);
 
         // Update cache if we're generating and were there <pre> tags generated
-        if ($the_post_id && $this->cache_generated && !empty($this->cache)) {
-            update_post_meta($the_post_id, 'flyn-syntax-cache-content', wp_slash($this->cache));
+        if ($post && $this->cache_generated && !empty($this->cache)) {
+            update_post_meta($post->ID, 'flyn-syntax-cache-content', wp_slash($this->cache));
         }
 
         $this->matches = [];
@@ -357,31 +219,13 @@ class FlynSyntax
         }
 
         global $post;
-        $the_post    = $post;
-        $the_post_id = $post->ID;
 
-        // Reset cache settings on each filter - we might be showing
-        // multiple posts on the one page
-        $this->cache           = [];
-        $this->cache_match_num = 0;
-        $this->cache_generate  = false;
-
-        if (is_object($the_post)) {
-            $cache = get_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', true);
-
-            if (is_array($cache)) {
-                $this->cache = $cache;
-            } else {
-                // Inform the highlight() method that we're regenning
-                $this->cache_generate = true;
-            }
-        }
-
+        $this->setupCache($post);
         $content = $this->afterFilter($content);
 
         // Update cache if we're generating and were there <pre> tags generated
-        if (is_object($the_post) && $this->cache_generated && $this->cache) {
-            update_post_meta($the_post_id, 'flyn-syntax-cache-excerpt', wp_slash($this->cache));
+        if (is_object($post) && $this->cache_generated && $this->cache) {
+            update_post_meta($post->ID, 'flyn-syntax-cache-excerpt', wp_slash($this->cache));
         }
 
         $this->matches = [];
@@ -396,30 +240,48 @@ class FlynSyntax
         }
 
         global $comment;
-        $the_post    = $comment;
-        $the_post_id = $comment->comment_ID;
-
-        if (is_object($the_post)) {
-            $cache = get_comment_meta($the_post_id, 'flyn-syntax-cache-comment', true);
-
-            if (is_array($cache)) {
-                $this->cache = $cache;
-            } else {
-                // Inform the highlight() method that we're regenning
-                $this->cache_generate = true;
-            }
-        }
-
+        
+        $this->setupCache($comment);
         $content = $this->afterFilter($content);
 
         // Update cache if we're generating and were there <pre> tags generated
-        if (is_object($the_post) && $this->cache_generated && !empty($this->cache)) {
-            update_comment_meta($the_post_id, 'flyn-syntax-cache-comment', wp_slash($this->cache));
+        if (is_object($comment) && $this->cache_generated && !empty($this->cache)) {
+            update_comment_meta($comment->comment_ID, 'flyn-syntax-cache-comment', wp_slash($this->cache));
         }
 
         $this->matches = [];
 
         return $content;
+    }
+
+    /**
+     * Sets up the initial cache settings for a post in order to determine
+     * whether or not we actually do need to cache or if a cache has already
+     * been generated for this post.
+     *
+     * @param \WP_Post|null $post
+     * @return void
+     */
+    public function setupCache($post)
+    {
+        // Reset cache settings on each filter - we might be showing
+        // multiple posts on the one page
+        $this->cache           = [];
+        $this->cache_match_num = 0;
+        $this->cache_generate  = false;
+
+        if (!is_object($post)) {
+            return;
+        }
+
+        $cache = get_post_meta($post->ID, 'flyn-syntax-cache-content', true);
+
+        if (is_array($cache)) {
+            $this->cache = $cache;
+        } else {
+            // Inform the highlight() method that we're regenning
+            $this->cache_generate = true;
+        }
     }
 
     public function afterFilter(string $content): string

@@ -11,13 +11,15 @@
     ],
     "autoload": {
         "psr-4": {
-            "FlynSyntax\\": "FlynSyntax"
+            "FlynSyntax\\": "FlynSyntax",
+            "FlynSyntaxTests\\": "tests"
         }
     },
     "require": {
         "geshi/geshi": "dev-master"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.5",
+        "phpunit/phpunit": "^9"
     }
 }
