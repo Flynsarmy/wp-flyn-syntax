@@ -12,11 +12,13 @@
     </rule>
 
     <file>flyn-syntax.php</file>
-    <file>FlynSyntax/</file>
-    <file>tests/</file>
+    <file>FlynSyntax/*</file>
+    <file>tests/*</file>
 
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/assets/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/partials/*</exclude-pattern>
+    <exclude-pattern>webpack.config.js</exclude-pattern>
+    <exclude-pattern>*\.(?!php$)</exclude-pattern>
 </ruleset>
