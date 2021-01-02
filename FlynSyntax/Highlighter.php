@@ -8,7 +8,7 @@ class Highlighter
 {
     // GeSHi language to highlight
     public string $language = '';
-    
+
     // Starting line number. If set to 0, no lines will display
     public int $firstLine = 0;
 
@@ -127,7 +127,7 @@ class Highlighter
         if ($firstLine === 0) {
             return $lines;
         }
-        
+
         return array_map(function ($highlightLine) use ($firstLine) {
             return $highlightLine - ($firstLine - 1);
         }, $lines);

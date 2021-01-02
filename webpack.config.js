@@ -7,12 +7,17 @@
  */
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 
+/**
+ * External dependencies
+ */
+const ESLintPlugin = require( 'eslint-webpack-plugin' );
+
 const isProduction = process.env.NODE_ENV === 'production';
 
 const config = {
 	...defaultConfig,
 	entry: {
-		'block': './assets/js/src/block.js',
+		block: './assets/js/src/block.js',
 	},
 	output: {
 		path: __dirname + '/assets/js/build/',
@@ -23,22 +28,17 @@ const config = {
 	module: {
 		...defaultConfig.module,
 	},
-	plugins: [
-		...defaultConfig.plugins,
-	],
+	plugins: [ ...defaultConfig.plugins ],
 };
 
 if ( ! isProduction ) {
-	config.module.rules.unshift({
-		test: /\.jsx?$/,
-		enforce: "pre",
-		loader: "eslint-loader",
-		exclude: /node_modules/,
-		options: {
+	config.plugins = [
+		new ESLintPlugin( {
 			emitWarning: true,
-			configFile: "./.eslintrc.js"
-		}
-	});
+			overrideConfigFile: './.eslintrc.js',
+		} ),
+		...config.plugins,
+	];
 }
 
 module.exports = config;

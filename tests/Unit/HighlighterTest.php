@@ -1,6 +1,6 @@
 <?php
 
-namespace FlynSyntaxTests;
+namespace FlynSyntaxTests\Unit;
 
 use FlynSyntax\Highlighter;
 use PHPUnit\Framework\TestCase;

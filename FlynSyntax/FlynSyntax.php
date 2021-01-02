@@ -30,7 +30,7 @@ class FlynSyntax
     {
         $this->inludeDependencies();
 
-        $this->token = md5(uniqid(rand()));
+        $this->token = md5(uniqid((string)rand()));
     }
 
     public function initFilters()
@@ -133,7 +133,7 @@ class FlynSyntax
      * Create a highlighted code block from a given unique identifier regex match
      * created in beforeFilter
      *
-     * @param array $match         [ 0 => full_str, 1 => match_id ]
+     * @param array $match_details         [ 0 => full_str, 1 => match_id ]
      * @return string
      */
     public function highlight(array $match_details): string
@@ -154,7 +154,7 @@ class FlynSyntax
         $highlighter = new Highlighter($match);
 
         $output = $highlighter->render();
-        
+
         if ($this->cache_generate) {
             $this->cache_generated = true;
             $this->cache[$this->cache_match_num] = $output;
@@ -191,10 +191,10 @@ class FlynSyntax
                 if (empty($match[1])) {
                     return $match[0];
                 }
-        
+
                 $i = count($this->matches);
                 $this->matches[$i] = $match;
-        
+
                 return "\n\n<p>" . $this->token . sprintf('%03d', $i) . "</p>\n\n";
             },
             $content
@@ -208,7 +208,7 @@ class FlynSyntax
         }
 
         global $post;
-        
+
         $this->setupCache($post);
         $content = $this->afterFilter($content);
 
@@ -250,7 +250,7 @@ class FlynSyntax
         }
 
         global $comment;
-        
+
         $this->setupCache($comment);
         $content = $this->afterFilter($content);
 
