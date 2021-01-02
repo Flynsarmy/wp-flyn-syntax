@@ -29,7 +29,7 @@
         "phpcbf": "vendor/bin/phpcbf --standard=./.phpcs.xml ./",
         "phpcs":  "vendor/bin/phpcs  -s --standard=./.phpcs.xml ./",
         "phpcompat": "vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 7.4 ./",
-        "phpunit": "vendor/bin/phpunit ./tests/unit/",
+        "phpunit": "vendor/bin/phpunit ./tests/Unit/",
         "coverage": "vendor/bin/phpunit tests/unit --coverage-html coverage --whitelist src/",
         "lint": "vendor/bin/parallel-lint --exclude vendor .",
         "test": [
