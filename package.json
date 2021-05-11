@@ -29,7 +29,7 @@
     "@wordpress/scripts": "^12.6.0",
     "eslint-webpack-plugin": "^2.4.1",
     "jquery": "^3.5.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "prettier": "npm:wp-prettier@1.19.1"
   },
   "scripts": {
