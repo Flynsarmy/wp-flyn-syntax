@@ -21,16 +21,16 @@
   },
   "main": "index.js",
   "devDependencies": {
-    "@wordpress/block-editor": "^5.2.0",
-    "@wordpress/blocks": "^6.14.1",
-    "@wordpress/components": "^12.0.0",
-    "@wordpress/editor": "^9.25.0",
-    "@wordpress/element": "^2.13.1",
-    "@wordpress/scripts": "^12.6.0",
-    "eslint-webpack-plugin": "^2.4.1",
-    "jquery": "^3.5.1",
+    "@wordpress/block-editor": "^6.0.0",
+    "@wordpress/blocks": "^9.0.0",
+    "@wordpress/components": "^14.0.0",
+    "@wordpress/editor": "^10.0.0",
+    "@wordpress/element": "^3.0.0",
+    "@wordpress/scripts": "^16.0.0",
+    "eslint-webpack-plugin": "^2.5.4",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.21",
-    "prettier": "npm:wp-prettier@1.19.1"
+    "prettier": "npm:wp-prettier@2.0.5"
   },
   "scripts": {
     "build": "wp-scripts build",

@@ -35,7 +35,7 @@ const Visual = ( props ) => {
 			editorSettings
 		);
 
-		theEditor.codemirror.on( 'change', function(
+		theEditor.codemirror.on( 'change', function (
 			instance /*, changeObj*/
 		) {
 			props.setAttributes( {
