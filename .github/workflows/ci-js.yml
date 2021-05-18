@@ -14,9 +14,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [16.x]
 
-    name: JS-${{ matrix.node-version }} 
+    name: JS-${{ matrix.node-version }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
