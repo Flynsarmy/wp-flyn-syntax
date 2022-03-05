@@ -195,10 +195,6 @@ class Highlighter
         $path    = pathinfo($parsed['path']);
         $caption = '';
 
-        if (!isset($path['filename'])) {
-            return "";
-        }
-
         if (isset($parsed['scheme'])) {
             $caption .= '<a href="' . $url . '">';
         }
