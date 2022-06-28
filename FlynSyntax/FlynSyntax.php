@@ -148,7 +148,7 @@ class FlynSyntax
      * Create a highlighted code block from a given unique identifier regex match
      * created in beforeFilter
      *
-     * @param array{0: string, 1: int} $match_details         [ 0 => full_str, 1 => match_id ]
+     * @param array<int|string, string> $match_details         [ 0 => full_str, 1 => match_id ]
      * @return string
      */
     public function highlight(array $match_details): string
