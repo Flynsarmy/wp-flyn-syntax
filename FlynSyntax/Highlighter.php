@@ -12,7 +12,11 @@ class Highlighter
     // Starting line number. If set to 0, no lines will display
     public int $firstLine = 0;
 
-    // List of line numbers to highlight
+    /**
+     * List of line numbers to highlight
+     *
+     * @var int[]?
+     */
     public array $highlightLines = [];
 
     // The syntax highlighter
@@ -27,16 +31,25 @@ class Highlighter
     /**
      * Constructor method
      *
-     * @param array $match [
-     *      lang => string,        GeSHi language
-     *      line => int,           Starting line number. 0 for no line numbers
-     *      highlight => string,   Highlight line ranges
-     *      [src => string],       Caption to display above code block
-     *      code => string,        Code to highlight
-     * ]
+     * @param array{
+     *      lang: string,
+     *      line: int,
+     *      highlight: string,
+     *      src?: string,
+     *      code: string
+     *  } $match [
+    *      lang      => GeSHi language
+    *      line      => Starting line number. 0 for no line numbers
+    *      highlight => Highlight line ranges
+    *      src       => Caption to display above code block
+    *      code      => Code to highlight
+    *   ]
      */
-    public function __construct(array $match = [])
+    public function __construct(array $match)
     {
+        /*
+        *
+        */
         $this->language         = strtolower(trim($this->arrayGet($match, 'lang', '')));
         $this->firstLine        = intval(trim($this->arrayGet($match, 'line', 0)));
         //$escaped              = trim($match[3]);
@@ -79,7 +92,7 @@ class Highlighter
      * numbers to highlight.
      *
      * @param string $lineRanges    e.g 1-5, 9, 7, 19-30
-     * @return array All line numbers to highlight
+     * @return int[]? All line numbers to highlight
      */
     public function parseHighlightLines(string $lineRanges): array
     {
@@ -118,9 +131,9 @@ class Highlighter
      * Returns a list of lines to highlight relative to the starting line.
      * When we start on line 3, highlight="4-5" means second and third lines.
      *
-     * @param array $lines          List of lines to highlight
-     * @param integer $firstLine    First line number
-     * @return array                List of lines to highlight
+     * @param int[] $lines          List of lines to highlight
+     * @param int   $firstLine    First line number
+     * @return int[]                List of lines to highlight
      */
     public function getRelativeLines(array $lines, int $firstLine): array
     {
@@ -223,7 +236,7 @@ class Highlighter
      * Helper function for returning array values if they exist or a given
      * default if they don't.
      *
-     * @param array $array
+     * @param array<mixed> $array
      * @param mixed $key
      * @param mixed $default
      * @return mixed

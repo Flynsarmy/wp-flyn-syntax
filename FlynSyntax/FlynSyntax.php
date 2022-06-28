@@ -3,6 +3,7 @@
 namespace FlynSyntax;
 
 use FlynSyntax\Highlighter;
+use WP_Post;
 
 class FlynSyntax
 {
@@ -10,9 +11,23 @@ class FlynSyntax
 
     public string $token;
 
+    /**
+     * @var list<
+     *          array{
+     *              lang: string,
+     *              line: int,
+     *              highlight: string,
+     *              src?: string,
+     *              code: string
+     *          }
+     *      >
+     */
     public array $matches = [];
 
     // Used for caching
+    /**
+     * @var string[]?
+     */
     public array $cache = [];
     public bool $cache_generate  = false;
     public bool $cache_generated = false;
@@ -33,7 +48,7 @@ class FlynSyntax
         $this->token = md5(uniqid((string)rand()));
     }
 
-    public function initFilters()
+    public function initFilters(): void
     {
         // Invalidate cache whenever new/updated posts/comments are made
         add_action('save_post', [$this, 'invalidatePostCache']);
@@ -56,18 +71,18 @@ class FlynSyntax
         add_filter('comment_text', [$this, 'afterFilterComment'], 99);
     }
 
-    public function invalidatePostCache(int $post_id)
+    public function invalidatePostCache(int $post_id): void
     {
         delete_post_meta($post_id, 'flyn-syntax-cache-content');
         delete_post_meta($post_id, 'flyn-syntax-cache-excerpt');
     }
 
-    public function invalidateCommentCache(int $comment_id)
+    public function invalidateCommentCache(int $comment_id): void
     {
         delete_comment_meta($comment_id, 'flyn-syntax-cache-comment');
     }
 
-    public function inludeDependencies()
+    public function inludeDependencies(): void
     {
         if (!defined('GESHI_VERSION')) {
             require_once __DIR__ . '/../vendor/geshi/geshi/src/geshi.php';
@@ -79,7 +94,7 @@ class FlynSyntax
      *
      * @return void
      */
-    public function adminEnqueue(string $hook)
+    public function adminEnqueue(string $hook): void
     {
         global $post;
 
@@ -104,7 +119,7 @@ class FlynSyntax
      *
      * @return void
      */
-    public function enqueue()
+    public function enqueue(): void
     {
         $url = plugin_dir_url(__DIR__ . "/../index.php") . 'assets/css/flyn-syntax.css';
 
@@ -118,7 +133,7 @@ class FlynSyntax
      *
      * @return void
      */
-    public function enqueueBlockEditorAssets()
+    public function enqueueBlockEditorAssets(): void
     {
         $asset = require __DIR__ . '/../assets/js/build/block.min.asset.php';
         wp_enqueue_script(
@@ -133,7 +148,7 @@ class FlynSyntax
      * Create a highlighted code block from a given unique identifier regex match
      * created in beforeFilter
      *
-     * @param array $match_details         [ 0 => full_str, 1 => match_id ]
+     * @param array{0: string, 1: int} $match_details         [ 0 => full_str, 1 => match_id ]
      * @return string
      */
     public function highlight(array $match_details): string
@@ -193,6 +208,12 @@ class FlynSyntax
                 }
 
                 $i = count($this->matches);
+                // [
+                //  lang => 'php', 1 => 'php',
+                //  line => '3', 2 => '3',
+                //  escaped => '', 3 => '',
+                //  ...
+                // ]
                 $this->matches[$i] = $match;
 
                 return "\n\n<p>" . $this->token . sprintf('%03d', $i) . "</p>\n\n";
@@ -272,7 +293,7 @@ class FlynSyntax
      * @param \WP_Post|null $post
      * @return void
      */
-    public function setupCache($post)
+    public function setupCache(WP_Post | null $post)
     {
         // Reset cache settings on each filter - we might be showing
         // multiple posts on the one page

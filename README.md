@@ -3,7 +3,6 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 ![Build Status - PHP](https://github.com/Flynsarmy/wp-flyn-syntax/workflows/CI%20-%20PHP/badge.svg)
 ![Build Status - JS](https://github.com/Flynsarmy/wp-flyn-syntax/workflows/CI%20-%20JS/badge.svg)
-[![Scrutinizer](https://scrutinizer-ci.com/g/Flynsarmy/wp-flyn-syntax/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Flynsarmy/wp-flyn-syntax/?branch=master)
 
 > Flyn-Syntax provides clean syntax highlighting for embedding source code within pages or posts.
 
