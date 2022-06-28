@@ -35,13 +35,14 @@ const Visual = ( props ) => {
 			editorSettings
 		);
 
-		theEditor.codemirror.on( 'change', function (
-			instance /*, changeObj*/
-		) {
-			props.setAttributes( {
-				content: instance.getValue(),
-			} );
-		} );
+		theEditor.codemirror.on(
+			'change',
+			function ( instance /*, changeObj*/ ) {
+				props.setAttributes( {
+					content: instance.getValue(),
+				} );
+			}
+		);
 
 		setEditor( theEditor );
 		$( ref.current ).data( 'initiated', true );
