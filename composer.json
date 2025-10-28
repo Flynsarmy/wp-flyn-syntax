@@ -9,6 +9,7 @@
             "email": "flynsarmy@gmail.com"
         }
     ],
+    "type": "wordpress-plugin",
     "autoload": {
         "psr-4": {
             "FlynSyntax\\": "FlynSyntax",
